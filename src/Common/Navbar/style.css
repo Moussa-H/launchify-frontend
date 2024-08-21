@@ -23,12 +23,19 @@ a.btn.btn-outline-primary.bg-transparent.border-0 {
 .navbar-brand img {
 height:40px;
 }
+.btn-primary {
+    margin-top: 0px!important;
+}
 @media only screen and (max-width:500px) {
 ul.navbar-nav.mx-auto {
-    margin-top: 20px;
+    margin-top: 20px!important;
 }
 a.btn.btn-primary.mr-4 {
-    margin-top: 20px;
+    margin-top: 20px!important;
     margin-bottom: 10px;
+}
+.container-fluid.w-90.mx-auto {
+    width: 100%;
+    padding: 15px;
 }
 }

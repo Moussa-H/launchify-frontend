@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function JoinNowButton() {
   return (
-    <Link className="btn btn-primary mr-4" to="/sign-up">
+    <Link className="btn btn-primary custom-btn" to="/sign-up">
       Join now
     </Link>
   );
