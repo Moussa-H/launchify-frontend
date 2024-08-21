@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import logo from "../../assets/logo.svg";
 import "./style.css";
+import JoinNowButton from "../../Components/JoinNowButton";
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-transparent">
       <div className="container-fluid w-90 mx-auto py-4">
         <Link className="navbar-brand" to="/">
-          <img src={logo} alt="Logo"/>
+          <img src={logo} alt="Logo" />
         </Link>
         <button
           className="navbar-toggler"
@@ -46,12 +47,10 @@ function Navbar() {
           </ul>
 
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="btn btn-primary mr-4" to="/sign-up">
-                Join now
-              </Link>
+            <li className="nav-item px-4">
+              <JoinNowButton />
             </li>
-            <li className="nav-item">
+            <li className="nav-item px-4">
               <Link
                 className="btn btn-outline-primary bg-transparent border-0"
                 to="/login"
