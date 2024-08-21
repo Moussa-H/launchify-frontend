@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import Layout from "../../Common/Layout";
 
-export default function Home() {
+function Home() {
   return (
-    <div>
-      
-    </div>
-  )
+    <Layout>
+      <div>
+        <h1>Home Page</h1>
+        <p>Welcome to the Home page!</p>
+      </div>
+    </Layout>
+  );
 }
+
+export default Home;

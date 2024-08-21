@@ -1,0 +1,25 @@
+.container-fluid.w-90.mx-auto {
+    width: 90%;
+    padding: 0px;
+}
+a.nav-link {
+    font-size: 17px;
+    color: #475569!important;
+    font-weight: 500;
+}
+a.btn.btn-primary.mr-4 {
+    border-radius: 20px;
+    font-size: 17px;
+    padding: 8px 20px;
+    margin-right: 30px;
+    font-weight: 500;
+    background: #0A69D7;
+}
+a.btn.btn-outline-primary.bg-transparent.border-0 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #475d72;
+}
+.navbar-brand img {
+height:40px;
+}
