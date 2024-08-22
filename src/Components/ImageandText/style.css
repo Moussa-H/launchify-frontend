@@ -1,22 +1,42 @@
 .info-section {
-  margin: 40px 0;
+  padding: 2rem 0; /* Adjust padding as needed */
 }
 
 .text-content {
-  padding: 20px;
+  text-align: left;
+}
+
+.text-content h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.text-content p {
+    font-size: 1.1rem;
+    color: #333;
+    width: 70%;
+}
+.row.align-items-center.flex-row-reverse .text-content p{
+    font-size: 1.1rem;
+    color: #333;
+    width: 100%;
 }
 
 .section-image {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
+    width: 80%;
 }
-
-@media (max-width: 768px) {
-  .info-section .row {
-    text-align: center;
-  }
-
-  .info-section .section-image {
-    margin: 0 auto;
-  }
+.row.align-items-center {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.row.align-items-center.flex-row-reverse .col-md-6.text-content {
+    margin-left: auto;
+    width: 40%;
+}
+/* Flex direction for imageFirst prop */
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }

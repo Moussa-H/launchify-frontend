@@ -50,6 +50,13 @@
 a.nav-link {
   color: #fff !important;
 }
+.features-heading {
+  text-align: center;
+  color: #0A69D7; /* The color you specified */
+  font-weight: 600; /* The font weight you specified */
+  margin: 20px 0; /* Optional margin for spacing */
+}
+
 @media only screen and (max-width: 800px) {
   .navbar-collapse {
     flex-basis: 100%;
