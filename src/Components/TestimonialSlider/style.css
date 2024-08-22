@@ -12,9 +12,9 @@
 }
 
 .testimonial-text {
-  color: #333;
+    color: #333;
+    font-weight: 400;
 }
-
 /* Custom CSS for carousel navigation arrows */
 .carousel-control-prev,
 .carousel-control-next {
@@ -45,6 +45,8 @@
     margin-left: auto;
     margin-right: auto;
     border-radius: 20px;
+    margin-top:100px;
+     margin-bottom:100px;
 
 }
 
@@ -60,6 +62,7 @@
 i.fas.fa-chevron-left {
     color: #000;
 }
+
 i.fas.fa-chevron-left {
     left: -70%;
     display: block;

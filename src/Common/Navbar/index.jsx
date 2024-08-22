@@ -52,7 +52,7 @@ function Navbar() {
                 Join now
               </Link>
             </li>
-            <li className="nav-item px-4">
+            <li className="nav-item px-2">
               <Link
                 className="btn btn-outline-primary bg-transparent border-0"
                 to="/login"

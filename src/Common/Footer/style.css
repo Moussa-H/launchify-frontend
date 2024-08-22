@@ -1,0 +1,84 @@
+/* Footer.css */
+
+.footer {
+  background-color: rgba(4, 37, 71, 1); /* Set background color */
+  color: #ffffff; /* Set text color to ensure visibility on dark background */
+  padding: 2rem 0; /* Add padding for spacing */
+font-family: 'Poppins', sans-serif;
+}
+
+.footer-logo {
+  max-width: 150px; /* Adjust logo size */
+}
+
+.footer-description {
+    font-size: 0.9rem;
+    color: #ffffff;
+    width: 70%;
+    font-weight: 300;
+}
+
+.footer-social-media a {
+  color: #ffffff; /* Social media icons color */
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+a.btn.btn-link {
+    margin: 0px;
+}
+
+.col-md-2 p {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 300;
+    font-size: 14px;
+}
+.footer-social-media a:hover {
+  color: #d0d0d0; /* Change color on hover for better visibility */
+}
+
+.footer h5 {
+    font-size: 1rem;
+    margin-bottom: 1.6rem;
+    color: #ffffff;
+}
+
+.footer ul {
+  padding-left: 0;
+}
+
+.footer ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer ul li a {
+  text-decoration: none;
+  color: #ffffff; /* Link color */
+}
+
+.footer ul li a:hover {
+  text-decoration: underline;
+  color: #d0d0d0; /* Change color on hover */
+}
+
+.fa-brands, .fab {
+    font-weight: 100;
+    font-size: 15px;
+}
+.footer-description {
+    font-size: 0.9rem;
+    color: #ffffff;
+    width: 70%;
+}
+.footer ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+@media only screen  and (max-width:500px){
+  .col-md-2 {
+    margin-top: 40px;
+}
+}
