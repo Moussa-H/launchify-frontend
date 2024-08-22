@@ -23,10 +23,72 @@
 }
 a.btn.btn-primary.custom-btn {
     border-radius: 30px;
-    font-size: 16px;
+    font-size: 17px;
     padding: 7px 45px;
     font-weight: 400;
     background: #0A69D7;
+}
+
+.home-title {
+    font-size: 38px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.text-dark-gray {
+  color: #535353;
+}
+
+.text-primary-blue {
+  color: #0A69D7;
+}
+
+.home-description {
+  color: #817B7B;
+  max-width: 800px;
+}
+
+.startups-card {
+  background: linear-gradient(90deg, rgba(216, 233, 255, 0.3) 0%, #FFFFFF 100%);
+  border: none;
+}
+
+.investors-card {
+  background: linear-gradient(90deg, rgba(245, 252, 196, 0.3) 0%, #FFFFFF 100%);
+  border: none;
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+.card-subtitle {
+  font-size: 1.25rem;
+}
+
+.card-text {
+  color: rgba(129, 123, 123, 1);
+}
+.btn-outline-primary.focus, .btn-outline-primary:focus {
+    box-shadow: 0 0 0 .2rem rgb(0 123 255 / 0%);
+}
+
+@media (min-width: 768px) {
+  .home-description {
+    font-size: 1.1rem;
+  }
+
+  .card-title {
+    font-size: 1.75rem;
+  }
+
+  .card-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .card-text {
+    font-size: 1rem;
+  }
 }
 @media only screen and (max-width:500px) {
     .col-lg-6.text-left h2 {
@@ -35,5 +97,16 @@ a.btn.btn-primary.custom-btn {
 }
 .col-lg-6.text-center img {
     margin-top: 50px;
+}
+.home-title {
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+.col-md-6.my-5 .p-5 {
+    padding: 1rem !important;
+}
+.col-md-6.my-5 {
+    margin-top: 10px!important;
 }
 }
