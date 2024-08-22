@@ -1,20 +1,18 @@
 import React from "react";
 import Layout from "../../Common/Layout";
-import "./style.css";
-import hero from "../../assets/hero-about-us.png";
+import styles from "./style.css"; 
+import heroImage from "../../assets/hero-about-us.png";
+import BannerSection from "../../Components/BannerSection";
 
 export default function AboutUs() {
+  const title = "Connect with the best-in-class startup founders, in seconds";
   return (
     <div>
-      <Layout>
-        <div className="banner-section">
-          <img src={hero} alt="Banner" className="banner-image" />
-          <div className="banner-content text-center">
-            <h1>Connect with the best-in-class</h1>
-            <h1>Startup founders, in secondsss</h1>
-          </div>
-        </div>
-      </Layout>
+      <div className={styles}>
+        <Layout>
+          <BannerSection title={title} image={heroImage} />
+        </Layout>
+      </div>
     </div>
   );
 }
