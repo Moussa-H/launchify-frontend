@@ -21,13 +21,7 @@
 .col-lg-6.text-left p {
     margin-bottom: 30px;
 }
-a.btn.btn-primary.custom-btn {
-    border-radius: 30px;
-    font-size: 17px;
-    padding: 7px 45px;
-    font-weight: 400;
-    background: #0A69D7;
-}
+
 
 .home-title {
     font-size: 38px;
@@ -72,6 +66,29 @@ a.btn.btn-primary.custom-btn {
 .btn-outline-primary.focus, .btn-outline-primary:focus {
     box-shadow: 0 0 0 .2rem rgb(0 123 255 / 0%);
 }
+.stats-section {
+  background: linear-gradient(90deg, #042242 0%, #0A57A8 100%);
+}
+
+.stats-title {
+  font-size: 2.5rem;
+  color: #ffffff;
+}
+.custom-rounded{
+  border-radius: 20px;
+}
+.stats-line {
+    width: 40px;
+    height: 5px;
+    border-radius: 20px;
+    background: rgba(10, 105, 215, 1);
+}
+
+.stats-subtitle {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
 
 @media (min-width: 768px) {
   .home-description {

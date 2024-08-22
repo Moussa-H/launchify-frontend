@@ -4,6 +4,7 @@ import "./style.css";
 import Hero from "../../assets/home-hero.png";
 import JoinNowButton from "../../Components/JoinNowButton";
 import { Link } from "react-router-dom";
+import TestimonialSlider from "../../Components/TestimonialSlider";
 function Home() {
   return (
     <Layout>
@@ -37,7 +38,6 @@ function Home() {
             high-quality connections.
           </p>
         </div>
-
         {/* Cards Section */}
         <div className="row">
           <div className="col-md-6 my-5">
@@ -83,6 +83,33 @@ function Home() {
             </div>
           </div>
         </div>
+        <div className="stats-section py-5 my-5 custom-rounded">
+          <div className="container">
+            <div className="row text-center">
+              {/* First Column */}
+              <div className="col-md-4 my-5">
+                <h2 className="stats-title">5,000+</h2>
+                <div className="stats-line mx-auto mb-3"></div>
+                <p className="stats-subtitle">Startups and Investors</p>
+              </div>
+
+              {/* Second Column */}
+              <div className="col-md-4 my-5">
+                <h2 className="stats-title">$100M+</h2>
+                <div className="stats-line mx-auto mb-3"></div>
+                <p className="stats-subtitle">Raised by Startups</p>
+              </div>
+
+              {/* Third Column */}
+              <div className="col-md-4 my-5">
+                <h2 className="stats-title">100+</h2>
+                <div className="stats-line mx-auto mb-3"></div>
+                <p className="stats-subtitle">Mentors</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <TestimonialSlider />
       </div>
     </Layout>
   );

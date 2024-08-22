@@ -1,0 +1,89 @@
+
+
+.testimonial-card {
+  background: rgba(242, 248, 255, 1);
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.testimonial-card img {
+  width: 100px;
+  height: 100px;
+}
+
+.testimonial-text {
+  color: #333;
+}
+
+/* Custom CSS for carousel navigation arrows */
+.carousel-control-prev,
+.carousel-control-next {
+  color: black; /* Change arrow color to black */
+  width: 5%; /* Adjust width as needed */
+  height: 100%; /* Full height */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: black; /* Ensure arrow background is black */
+}
+
+/* Optional: Adjust size of the arrows */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 40px; /* Width of the arrow icon */
+  height: 40px; /* Height of the arrow icon */
+  background-size: 100%, 100%; /* Ensure background icon fits */
+}
+
+
+.testimonial-section {
+    background-color: #f2f8ff;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+
+}
+
+
+.col-md-2.text-center.text-md-start h5 {
+    font-weight: 800;
+}
+.col-md-2.text-center.text-md-start p {
+    font-size: 12px!important;
+    color: #7d7d7d!important;
+}
+
+i.fas.fa-chevron-left {
+    color: #000;
+}
+i.fas.fa-chevron-left {
+    left: -70%;
+    display: block;
+    position: absolute;
+    font-size: 18px;
+}
+i.fas.fa-chevron-right {
+    right: -70%;
+    display: block;
+    position: absolute;
+    font-size: 18px;
+}
+.col-md-4.text-center.text-md-start h5 {
+    font-weight: 800;
+}
+.col-md-4.text-center.text-md-start p {
+    color: #9c9c9c;
+}
+@media only screen and (max-width:500px) {
+    .testimonial-section {
+    width: 95%;
+}
+.testimonial-card {
+    padding: 0rem;
+    border-radius: 10px;
+}
+}
