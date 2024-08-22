@@ -1,5 +1,0 @@
-{
-  "watch": ["src/**/*", "public/**/*"],
-  "ext": "js,css,html,md",
-  "exec": "npm run auto-commit"
-}

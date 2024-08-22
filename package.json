@@ -19,8 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "auto-commit": "git add . && git commit -m 'Auto-commit: changes made in the design'"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
