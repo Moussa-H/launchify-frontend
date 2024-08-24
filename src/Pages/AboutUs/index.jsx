@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../../Common/Layout";
-
+import "./style.module.css";
 import heroImage from "../../assets/hero-about-us.png";
 import BannerSection from "../../Components/BannerSection";
 import ImageandText from "../../Components/ImageandText";
@@ -8,6 +8,7 @@ import feature1 from "../../assets/feature1.svg";
 import feature2 from "../../assets/feature2.svg";
 import feature3 from "../../assets/feature3.svg";
 import mission from "../../assets/our-mission-image.png";
+
 export default function AboutUs() {
   const title = "Connect with the best-in-class startup founders, in seconds";
   return (
