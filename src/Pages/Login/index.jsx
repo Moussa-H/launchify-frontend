@@ -3,7 +3,7 @@ import { Form, Button, Container, Alert, Spinner } from "react-bootstrap";
 import axios from "axios";
 import "./style.css"; // Import the CSS file
 import logo from "../../assets/logo.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -57,7 +57,9 @@ const Login = () => {
           <img src={logo} alt="Logo" className="Login-logo" />
         </div>
 
-        <h3 className="text-center mb-5 custom-font-size">Login to your account</h3>
+        <h3 className="text-center mb-5 custom-font-size">
+          Login to your account
+        </h3>
 
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formUsername" className="mb-4">
@@ -111,12 +113,11 @@ const Login = () => {
           </Button>
         </Form>
 
-        {/* Signup Link */}
         <div className="text-center mt-3">
           <span>Don’t have an account? </span>
-          <a href="/sign-up" className="login-link">
+          <Link href="/sign-up" className="login-link">
             Sign up
-          </a>
+          </Link>
         </div>
       </div>
     </Container>
