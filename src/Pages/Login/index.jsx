@@ -30,9 +30,19 @@ const Login = () => {
         "http://localhost:8000/api/login",
         formData
       );
+      const { status, user, authorisation } = response.data;
+
+      if (status === "success") {
+        // Save token, username, and role in local storage
+        localStorage.setItem("token", authorisation.token);
+        localStorage.setItem("username", user.username);
+        localStorage.setItem("role", user.role);
+
+       navigate(`/${user.role}-dashboard`);
+
+       
       console.log("Login successful:", response.data);
-      // Handle success (e.g., redirect to a different page)
-      navigate("/dashboard"); // Redirect to the dashboard or any other page
+    }
     } catch (error) {
       if (error.response && error.response.data.message) {
         setValidationError(error.response.data.message);

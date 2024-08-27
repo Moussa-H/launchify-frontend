@@ -26,6 +26,15 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
+
+        <Route
+          path="*"
+          element={
+            <PrivateRoute allowedRoles={["startup", "mentor", "investor"]}>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
