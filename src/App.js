@@ -6,6 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 
+
 // Import your pages
 import Home from "./Pages/Home";
 import Startups from "./Pages/Startups";
@@ -14,18 +15,22 @@ import Mentors from "./Pages/Mentors";
 import AboutUs from "./Pages/AboutUs";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/Signup";
+import PublicRoute from "./Components/PublicRoute";
+import PrivateRoute from "./Components/PrivateRoute";
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/startups" element={<Startups />} />
-        <Route path="/investors" element={<Investors />} />
-        <Route path="/mentors" element={<Mentors />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/" element={<PublicRoute><Home /></PublicRoute>} />
+        <Route path="/startups" element={<PublicRoute><Startups /></PublicRoute>} />
+        <Route path="/investors" element={<PublicRoute><Investors /></PublicRoute>} />
+        <Route path="/mentors" element={<PublicRoute><Mentors /></PublicRoute>} />
+        <Route path="/about-us" element={<PublicRoute><AboutUs /></PublicRoute>} />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />
+
 
         <Route
           path="*"
