@@ -1,8 +1,51 @@
-import React from "react";
-import { Form, Button, Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button, Container, Alert, Spinner } from "react-bootstrap";
+import axios from "axios";
 import "./style.css"; // Import the CSS file
 import logo from "../../assets/logo.svg";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [validationError, setValidationError] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setValidationError("");
+    setLoading(true); // Set loading to true when starting the request
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        formData
+      );
+      console.log("Login successful:", response.data);
+      // Handle success (e.g., redirect to a different page)
+      navigate("/dashboard"); // Redirect to the dashboard or any other page
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setValidationError(error.response.data.message);
+      } else {
+        setValidationError(
+          "An unexpected error occurred. Please try again later."
+        );
+      }
+    } finally {
+      setLoading(false); // Set loading to false after the request is done
+    }
+  };
+
   return (
     <Container
       fluid
@@ -14,29 +57,63 @@ const Login = () => {
           <img src={logo} alt="Logo" className="Login-logo" />
         </div>
 
-        <h3 class="text-center mb-5 custom-font-size">Login to your account</h3>
+        <h3 className="text-center mb-5 custom-font-size">Login to your account</h3>
 
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formUsername" className="mb-4">
-            <Form.Control type="text" placeholder="Username" />
+            <Form.Control
+              type="text"
+              placeholder="Username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
           </Form.Group>
 
           <Form.Group controlId="formPassword" className="mb-4">
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </Form.Group>
+
+          {validationError && (
+            <Alert variant="danger" className="text-center">
+              {validationError}
+            </Alert>
+          )}
 
           <Button
             variant="primary"
             type="submit"
             className="Login-button w-100"
+            disabled={loading} // Disable the button while loading
           >
-            Login
+            {loading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="visually-hidden">Loading...</span>
+              </>
+            ) : (
+              "Login"
+            )}
           </Button>
         </Form>
 
-        {/* Login Link */}
+        {/* Signup Link */}
         <div className="text-center mt-3">
-          <span>Don’t have an account ? </span>
+          <span>Don’t have an account? </span>
           <a href="/sign-up" className="login-link">
             Sign up
           </a>
