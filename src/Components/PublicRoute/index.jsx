@@ -1,17 +1,16 @@
 import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-const PublicRoute = ({ element, restricted, ...rest }) => {
+const PublicRoute = ({ element}) => {
   const token = localStorage.getItem("token");
 
-  if (token && restricted) {
-    // Redirect to the appropriate dashboard if the user is already logged in
+  if (token) {
     const role = localStorage.getItem("role");
     const redirectPath = `/${role}-dashboard`;
-    return <Navigate to={redirectPath} />;
+    return <Navigate to={redirectPath} replace />;
   }
 
-  return <Route {...rest} element={element} />;
+  return element; // Render the public component if no redirection is needed
 };
 
 export default PublicRoute;

@@ -36,13 +36,17 @@ const Login = () => {
         // Save token, username, and role in local storage
         localStorage.setItem("token", authorisation.token);
         localStorage.setItem("username", user.username);
-        localStorage.setItem("role", user.role);
+        console.log("role", user.role);
+        if (user.role === "startup") {
+          navigate("/startup-dashboard");
+        } else if (user.role === "mentor") {
+          navigate("/mentor-dashboard");
+        } else if (user.role === "investor") {
+          navigate("/investor-dashboard");
+        }
 
-       navigate(`/${user.role}-dashboard`);
-
-       
-      console.log("Login successful:", response.data);
-    }
+        console.log("Login successful:", response.data);
+      }
     } catch (error) {
       if (error.response && error.response.data.message) {
         setValidationError(error.response.data.message);
