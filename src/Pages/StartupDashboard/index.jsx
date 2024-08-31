@@ -1,48 +1,22 @@
 import React from "react";
-import { Container, Row, Col, Navbar, Nav, Dropdown } from "react-bootstrap";
-import { Outlet } from "react-router-dom";
-import StartupSidebar from "../../Components/Sidebars/StartupSidebar";
+import DashboardLayout from "../Dashboards/DashboardLayout";
+import Sidebar from "../../Components/Sidebars/Sidebar";
+import { Routes, Route } from "react-router-dom";
+import Profile from "../Dashboards/Startup/Profile";
+import Strategies from "../Dashboards/Startup/Strategies";
 
-const StartupDashboard = ({ title = "Startup Dashboard", username }) => {
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
-  };
+const links = [
+  { to: "profile", label: "Profile" },
+  { to: "strategies", label: "Strategies" },
+];
 
-  return (
-    <Container fluid>
-      <Row>
-        <Col xs={2} className="sidebar p-0">
-          <StartupSidebar />
-        </Col>
-        <Col xs={10} className="main-content p-0">
-          <Navbar bg="light" expand="lg" className="mb-3">
-            <Container fluid>
-              <Navbar.Brand>{title}</Navbar.Brand>
-              <Nav className="ms-auto">
-                <Dropdown align="end">
-                  <Dropdown.Toggle
-                    variant="outline-secondary"
-                    id="dropdown-basic"
-                  >
-                    <i className="bi bi-person-circle"></i> {username}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleLogout}>
-                      <i className="bi bi-box-arrow-right"></i> Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Nav>
-            </Container>
-          </Navbar>
-          <Container fluid>
-            <Outlet /> {/* This is where the child routes will be rendered */}
-          </Container>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+const StartupDashboard = () => (
+  <DashboardLayout sidebar={<Sidebar links={links} />}>
+    <Routes>
+      <Route path="profile" element={<Profile />} />
+      <Route path="strategies" element={<Strategies />} />
+    </Routes>
+  </DashboardLayout>
+);
 
 export default StartupDashboard;

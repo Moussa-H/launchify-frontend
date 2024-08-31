@@ -1,16 +1,17 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
 
-const PublicRoute = ({ element}) => {
+const PublicRoute = ({ element }) => {
   const token = localStorage.getItem("token");
 
+  // If token exists, go to protected route (PrivateRoute)
   if (token) {
-    const role = localStorage.getItem("role");
-    const redirectPath = `/${role}-dashboard`;
-    return <Navigate to={redirectPath} replace />;
+    return <PrivateRoute element={element} />;
   }
 
-  return element; // Render the public component if no redirection is needed
+  // If no token, render the public component
+  return element;
 };
 
 export default PublicRoute;

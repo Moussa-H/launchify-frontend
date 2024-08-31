@@ -1,28 +1,9 @@
+// src/Components/Dashboards/DashboardLayout.js
 import React from "react";
 import { Container, Row, Col, Navbar, Nav, Dropdown } from "react-bootstrap";
-import { Outlet, useLocation } from "react-router-dom";
-import InvestorSidebar from "../../Components/Sidebars/InvestorSidebar";
-import MentorSidebar from "../../Components/Sidebars/MentorSidebar";
-import StartupSidebar from "../../Components/Sidebars/StartupSidebar";
+import { Outlet } from "react-router-dom";
 
-const Dashboard = ({ title, username }) => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-
-  // Function to determine the appropriate sidebar based on role
-  const getSidebar = () => {
-    switch (role) {
-      case "investor":
-        return <InvestorSidebar />;
-      case "mentor":
-        return <MentorSidebar />;
-      case "startup":
-        return <StartupSidebar />;
-      default:
-        return null;
-    }
-  };
-
+const DashboardLayout = ({ sidebar }) => {
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/login";
@@ -32,19 +13,19 @@ const Dashboard = ({ title, username }) => {
     <Container fluid>
       <Row>
         <Col xs={2} className="sidebar p-0">
-          {getSidebar()}
+          {sidebar}
         </Col>
         <Col xs={10} className="main-content p-0">
           <Navbar bg="light" expand="lg" className="mb-3">
             <Container fluid>
-              <Navbar.Brand>{title}</Navbar.Brand>
+              <Navbar.Brand>Dashboard</Navbar.Brand> {/* Hardcoded title */}
               <Nav className="ms-auto">
                 <Dropdown align="end">
                   <Dropdown.Toggle
                     variant="outline-secondary"
                     id="dropdown-basic"
                   >
-                    <i className="bi bi-person-circle"></i> {username}
+                    <i className="bi bi-person-circle"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={handleLogout}>
@@ -56,7 +37,7 @@ const Dashboard = ({ title, username }) => {
             </Container>
           </Navbar>
           <Container fluid>
-            <Outlet />
+            <Outlet /> {/* This is where the child routes will be rendered */}
           </Container>
         </Col>
       </Row>
@@ -64,4 +45,4 @@ const Dashboard = ({ title, username }) => {
   );
 };
 
-export default Dashboard;
+export default DashboardLayout;

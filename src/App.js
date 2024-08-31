@@ -13,7 +13,6 @@ import Mentors from "./Pages/Mentors";
 import AboutUs from "./Pages/AboutUs";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/Signup";
-import Dashboard from "./Pages/Dashboard";
 import StartupDashboard from "./Pages/StartupDashboard";
 // Import your route components
 import PublicRoute from "./Components/PublicRoute";
@@ -53,7 +52,7 @@ function App() {
           path="/startup-dashboard/*"
           element={
             <PrivateRoute
-              allowedRoles={["startup"]}
+              allowedRoles={["Startup"]}
               element={<StartupDashboard />}
             />
           }
@@ -62,7 +61,7 @@ function App() {
           path="/mentor-dashboard/*"
           element={
             <PrivateRoute
-              allowedRoles={["mentor"]}
+              allowedRoles={["Mentor"]}
               element={<MentorDashboard />}
             />
           }
