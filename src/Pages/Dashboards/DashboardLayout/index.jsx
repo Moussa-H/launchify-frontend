@@ -1,9 +1,9 @@
-// src/Components/Dashboards/DashboardLayout.js
 import React from "react";
 import { Container, Row, Col, Navbar, Nav, Dropdown } from "react-bootstrap";
-import { Outlet } from "react-router-dom";
 
-const DashboardLayout = ({ sidebar }) => {
+const DashboardLayout = ({ sidebar, children }) => {
+  const username = localStorage.getItem("username");
+
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/login";
@@ -12,14 +12,22 @@ const DashboardLayout = ({ sidebar }) => {
   return (
     <Container fluid>
       <Row>
-        <Col xs={2} className="sidebar p-0">
+        <Col xs={2} className="sidebar p-0 bg-light">
+          {" "}
+          {/* Sidebar column */}
           {sidebar}
         </Col>
         <Col xs={10} className="main-content p-0">
+          {" "}
+          {/* Main content column */}
           <Navbar bg="light" expand="lg" className="mb-3">
             <Container fluid>
-              <Navbar.Brand>Dashboard</Navbar.Brand> {/* Hardcoded title */}
+              <Navbar.Brand>Dashboard</Navbar.Brand>
               <Nav className="ms-auto">
+                <Navbar.Text className="me-3">
+                  <i className="bi bi-person-circle"></i> {username}{" "}
+                  {/* Display username */}
+                </Navbar.Text>
                 <Dropdown align="end">
                   <Dropdown.Toggle
                     variant="outline-secondary"
@@ -37,7 +45,7 @@ const DashboardLayout = ({ sidebar }) => {
             </Container>
           </Navbar>
           <Container fluid>
-            <Outlet /> {/* This is where the child routes will be rendered */}
+            {children} {/* Render the passed children here */}
           </Container>
         </Col>
       </Row>

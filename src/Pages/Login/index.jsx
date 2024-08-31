@@ -37,11 +37,11 @@ const Login = () => {
         localStorage.setItem("token", authorisation.token);
         localStorage.setItem("username", user.username);
         console.log("role", user.role);
-        if (user.role === "startup") {
+        if (user.role === "Startup") {
           navigate("/startup-dashboard");
-        } else if (user.role === "mentor") {
+        } else if (user.role === "Mentor") {
           navigate("/mentor-dashboard");
-        } else if (user.role === "investor") {
+        } else if (user.role === "Investor") {
           navigate("/investor-dashboard");
         }
 
@@ -129,7 +129,7 @@ const Login = () => {
 
         <div className="text-center mt-3">
           <span>Don’t have an account? </span>
-          <Link href="/sign-up" className="login-link">
+          <Link to="/sign-up" className="login-link">
             Sign up
           </Link>
         </div>

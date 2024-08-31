@@ -149,7 +149,7 @@ const SignUp = () => {
         {/* Login Link */}
         <div className="text-center mt-3">
           <span>Have an account? </span>
-          <Link href="/login" className="login-link">
+          <Link to="/login" className="login-link">
             Login
           </Link>
         </div>

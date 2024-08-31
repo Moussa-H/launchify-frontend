@@ -40,7 +40,7 @@ const PrivateRoute = ({ element, allowedRoles }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Optional: add a more sophisticated loader
+    return <div>Loading...</div>; 
   }
 
   if (!role) {

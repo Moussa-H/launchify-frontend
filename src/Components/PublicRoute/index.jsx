@@ -1,6 +1,6 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute
+
+import PrivateRoute from "../PrivateRoute";
 
 const PublicRoute = ({ element }) => {
   const token = localStorage.getItem("token");

@@ -1,0 +1,38 @@
+/* Sidebar general styles */
+.sidebar {
+  background-color: #212735;
+  height: 100vh;
+  padding: 20px;
+}
+
+/* Sidebar logo */
+.sidebar-logo img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Sidebar link styles */
+.sidebar-link {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Active sidebar link styles */
+.sidebar-link.active {
+  background-color: #343B49;
+  color: #0A69D7;
+}
+
+.sidebar-link.active svg {
+  color: #0A69D7;
+}
+
+/* Sidebar link hover effect */
+.sidebar-link:hover {
+  background-color: #343B49;
+  color: #0A69D7;
+}
