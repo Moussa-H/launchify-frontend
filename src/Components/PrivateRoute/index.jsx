@@ -12,7 +12,6 @@ const PrivateRoute = ({ element, allowedRoles }) => {
     const username = localStorage.getItem("username");
 
     if (!token || !username) {
-      setRole(null);
       setLoading(false);
       return;
     }
@@ -21,24 +20,18 @@ const PrivateRoute = ({ element, allowedRoles }) => {
       try {
         const response = await axios.get("http://localhost:8000/api/getRole", {
           headers: { Authorization: `Bearer ${token}` },
-          params: { username: username },
+          params: { username },
         });
 
-        console.log("API Response:", response.data); // Debugging: Log the API response
-
-        // Check the structure of the response to ensure 'role' is correctly accessed
         const userRole = response.data.role;
         if (userRole) {
           setRole(userRole);
         } else {
           console.error("Role is undefined in the response");
-          setRole(null);
         }
-
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching role", error);
-        setRole(null);
+      } finally {
         setLoading(false);
       }
     };
@@ -47,18 +40,18 @@ const PrivateRoute = ({ element, allowedRoles }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // You can add a loader or spinner here
+    return <div>Loading...</div>; // Optional: add a more sophisticated loader
   }
 
   if (!role) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
- if (!allowedRoles.includes(role)) {
-   const dashboardPath = `/${role.toLowerCase()}-dashboard`;
-   console.log("Redirecting to:", dashboardPath);
-   return <Navigate to={dashboardPath} replace />;
- }
+  if (!allowedRoles || !allowedRoles.includes(role)) {
+    const dashboardPath = `/${role.toLowerCase()}-dashboard`;
+    console.log("Redirecting to:", dashboardPath);
+    return <Navigate to={dashboardPath} replace />;
+  }
 
   return element;
 };
