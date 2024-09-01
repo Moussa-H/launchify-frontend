@@ -91,6 +91,9 @@ h4.mb-4.fs-7 {
   font-size: 12px;
  
 }
+.sector-popup-content {
+  padding: 16px;
+}
 .custom-add-sector-btn:hover {
   border: 1px solid #e0e0e0;
   background-color: #f0f0f0;

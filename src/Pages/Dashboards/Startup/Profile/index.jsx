@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 import {
   TextField,
-  Button,
-  MenuItem,
-  FormControl,
-  Select,
-  InputLabel,
+  Button
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
-import countryList from "react-select-country-list";
 import CountrySelect from "../../../../Components/CountrySelect";
+import SectorPopup from "../../../../Components/SectorPopup";
 
 const Profile = () => {
   const [image, setImage] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const handleAddSectorClick = () => {
+    setPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupOpen(false);
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -99,6 +104,7 @@ const Profile = () => {
             color="primary"
             startIcon={<AddIcon className="custom-add-icon" />}
             className="custom-add-sector-btn"
+            onClick={handleAddSectorClick} // Open the popup
           >
             Add Sector
           </Button>
@@ -162,97 +168,41 @@ const Profile = () => {
           <hr className="mt-5 mb-4" />
 
           <div className="row">
-            <div className="col-12">
-              <h4 className="mb-4 fs-7">DETAILS</h4>
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <FormControl variant="filled" fullWidth>
-                <InputLabel>Business Type</InputLabel>
-                <Select>
-                  <MenuItem value="B2B">B2B</MenuItem>
-                  <MenuItem value="B2C">B2C</MenuItem>
-                  <MenuItem value="B2B2C">B2B2C</MenuItem>
-                  <MenuItem value="B2G">B2G</MenuItem>
-                  <MenuItem value="C2C">C2C</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <FormControl variant="filled" fullWidth>
-                <InputLabel>Company Stage</InputLabel>
-                <Select>
-                  <MenuItem value="Idea">Idea</MenuItem>
-                  <MenuItem value="Pre-seed">Pre-seed</MenuItem>
-                  <MenuItem value="Seed">Seed</MenuItem>
-                  <MenuItem value="Early Growth">Early Growth</MenuItem>
-                  <MenuItem value="Growth">Growth</MenuItem>
-                  <MenuItem value="Maturity">Maturity</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField
-                label="Employees Count"
-                type="number"
-                variant="filled"
-                fullWidth
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField label="Phone Number" variant="filled" fullWidth />
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField
-                label="Email Address"
-                type="email"
-                variant="filled"
-                fullWidth
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField
-                label="Website URL"
-                type="url"
-                variant="filled"
-                fullWidth
-              />
-            </div>
-          </div>
-
-          {/* New Section */}
-          <div className="row">
             <div
               className="col-6 mt-5 p-4"
               style={{
                 backgroundColor: "#FFF2CC",
                 marginLeft: "auto",
                 marginRight: "auto",
-                borderRadius:"10px"
+                borderRadius: "10px",
               }}
             >
               <h4 className="mb-4 fs-7">CURRENTLY RAISING</h4>
               <p style={{ fontSize: "14px", color: "#6D6D6D" }}>
                 The external funding the project needs now.
               </p>
-              <Button
-                variant="contained"
-                className="btn-current-round"
-              
-              >
+              <Button variant="contained" className="btn-current-round">
                 Set Current Round
               </Button>
             </div>
           </div>
         </div>
       )}
-
       {activeSection === "team" && (
-        <div className="container border p-4 mt-4">
-          <Button variant="contained" color="primary">
-            Add Member
-          </Button>
+        <div className="container border-0 p-4 mt-4">
+          <div className="row">
+            <div className="col-12">
+              <h4 className="mb-4 fs-7">TEAM MEMBERS</h4>
+            </div>
+            <div className="col-12">
+              <TextField label="Add Team Members" variant="filled" fullWidth />
+            </div>
+          </div>
         </div>
       )}
+
+      {/* Sector Popup */}
+      <SectorPopup open={popupOpen} onClose={handleClosePopup} />
     </div>
   );
 };
