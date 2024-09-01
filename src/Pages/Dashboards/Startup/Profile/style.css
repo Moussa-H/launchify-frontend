@@ -1,16 +1,47 @@
+.upload-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.upload-box.dragging {
+  background-color: #e0e0e0;
+}
+
+.preview-image {
+  max-height: 100%;
+  max-width: 100%;
+}
+.custom-add-sector-btn {
+  border: 1px solid #e0e0e0!important;
+  background-color: transparent!important;
+  border-radius: 50px!important;
+  color: #000!important;
+  font-weight: 600!important;
+  padding-top: 6px!important;
+}
+
 .custom-btn {
-  box-shadow: none; /* Remove shadow */
-  border-radius: 0; /* Remove border-radius on all corners */
-  border: 2px solid transparent; /* Transparent border to keep size */
-  position: relative; /* For positioning the bottom border */
-  background-color: transparent; /* Background color */
-  color: #007bff; /* Text color (Bootstrap primary color) */
+  box-shadow: none;
+  border-radius: 0;
+  border: 2px solid transparent;
+  position: relative;
+  background-color: transparent;
+  color: #007bff;
 }
 
 .custom-btn.active {
-  background-color: #007bff; /* Background color for active state */
-  color: #fff; /* Text color for active state */
-  border: 2px solid #007bff; /* Border color for active state */
+  background-color: #007bff;
+  color: #fff;
+  border: 2px solid #007bff;
 }
 
 .custom-btn:after {
@@ -20,5 +51,26 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  border-bottom: 2px solid #007bff; /* Bottom border color */
+  border-bottom: 2px solid #007bff;
+}
+.col-md-3.d-flex.flex-column.align-items-center.justify-content-center {
+  width: 21%;
+}
+
+.row.mb-4 .col-md-9 {
+  width: 79%;
+}
+
+.custom-add-sector-btn:hover {
+  border: 1px solid #e0e0e0;
+  background-color: #f0f0f0;
+}
+
+.custom-add-icon {
+  background: #0a69d7;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 17px;
+  padding: 2px; 
+      margin-top: -3px;
 }

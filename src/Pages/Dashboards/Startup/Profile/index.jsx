@@ -7,14 +7,15 @@ import {
   Select,
   InputLabel,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import "./style.css"
+import AddIcon from "@mui/icons-material/Add";
+import "./style.css";
+
+// Debounce function to limit how often resize handler is called
 
 const Profile = () => {
   const [image, setImage] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
-  const theme = useTheme();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -42,179 +43,129 @@ const Profile = () => {
   };
 
   return (
-    <div className="container border p-4 mt-4">
+    <div className="container p-4">
       {/* Image Upload Box */}
-      <div className="row mb-4">
-        <div className="col-md-3 d-flex flex-column align-items-center justify-content-center">
-          <div
-            className={`upload-box border p-3 d-flex align-items-center justify-content-center ${
-              dragging ? "dragging" : ""
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => document.getElementById("uploadImage").click()}
-            style={{
-              cursor: "pointer",
-              width: "100%",
-              height: "200px",
-              textAlign: "center",
-              backgroundColor: "#f9f9f9",
-            }}
-          >
-            {image ? (
-              <img
-                src={image}
-                alt="Preview"
-                className="img-fluid"
-                style={{ maxHeight: "100%", maxWidth: "100%" }}
-              />
-            ) : (
-              <div className="text-center">
-                {dragging ? (
-                  <p>Drop the image here...</p>
-                ) : (
-                  <p>Drag & Drop or Click to Upload</p>
-                )}
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            id="uploadImage"
-            accept="image/*"
-            className="form-control mt-2"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
+      <div className="upload-section">
+        <div
+          className={`upload-box ${dragging ? "dragging" : ""}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => document.getElementById("uploadImage").click()}
+          style={{
+            border: "2px dashed #ccc",
+            padding: "20px",
+            textAlign: "center",
+            cursor: "pointer",
+          }}
+        >
+          {image ? (
+            <img
+              src={image}
+              alt="Preview"
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          ) : (
+            <p>
+              {dragging
+                ? "Drop the image here..."
+                : "Drag & Drop or Click to Upload"}
+            </p>
+          )}
         </div>
+        <input
+          type="file"
+          id="uploadImage"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+        />
+      </div>
 
-        {/* Company Name and Description */}
-        <div className="col-md-9">
-          <div className="mb-3">
-            <TextField
-              label="Company Name"
-              variant="standard"
-              fullWidth
-              sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-            />
-          </div>
-          <div className="mb-3">
-            <TextField
-              id="standard-textarea"
-              label="Description"
-              placeholder="Add 1-2 sentences of description for the project that will be displayed to investors as a sneak peak on the platform, our newsletters etc."
-              multiline
-              variant="standard"
-              fullWidth
-              sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-            />
-          </div>
-          <Button variant="contained" color="primary">
-            Add Sector
-          </Button>
-        </div>
+      {/* Company Name and Description */}
+      <div className="company-info">
+        <TextField
+          label="Company Name"
+          variant="standard"
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Description"
+          placeholder="Add a brief description of the project."
+          multiline
+          variant="standard"
+          fullWidth
+          margin="normal"
+        />
+        <Button
+          variant="outlined"
+          color="primary"
+          startIcon={<AddIcon />}
+          style={{ marginTop: "20px" }}
+        >
+          Add Sector
+        </Button>
       </div>
 
       {/* Section Buttons */}
-      <div className="row mb-4">
-        <div className="col">
-          <Button
-            className={`custom-btn ${
-              activeSection === "overview" ? "active" : ""
-            }`}
-            onClick={() => setActiveSection("overview")}
-          >
-            Overview
-          </Button>
-          <Button
-            className={`custom-btn ms-2 ${
-              activeSection === "team" ? "active" : ""
-            }`}
-            onClick={() => setActiveSection("team")}
-          >
-            Team
-          </Button>
-        </div>
+      <div className="section-buttons">
+        <Button
+          onClick={() => setActiveSection("overview")}
+          style={{
+            marginRight: "10px",
+            backgroundColor:
+              activeSection === "overview" ? "#ddd" : "transparent",
+          }}
+        >
+          Overview
+        </Button>
+        <Button
+          onClick={() => setActiveSection("team")}
+          style={{
+            backgroundColor: activeSection === "team" ? "#ddd" : "transparent",
+          }}
+        >
+          Team
+        </Button>
       </div>
 
       {/* Dynamic Content Based on Active Section */}
       {activeSection === "overview" && (
-        <div className="container border p-4 mt-4">
+        <div className="overview-section">
           <h4>COMPANY REVIEW</h4>
-          <div className="row mb-3">
-            <div className="col-md-6 mb-3">
-              <TextField
-                label="Founder"
-                variant="filled"
-                fullWidth
-                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <TextField
-                label="Industries"
-                variant="filled"
-                fullWidth
-                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-              />
-            </div>
+          <div className="form-group">
+            <TextField label="Founder" variant="filled" fullWidth />
           </div>
-          <div className="row mb-3">
-            <div className="col-md-4 mb-3">
-              <TextField
-                label="Founding Year"
-                variant="filled"
-                fullWidth
-                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-              />
-            </div>
-            <div className="col-md-4 mb-3">
-              <FormControl fullWidth variant="filled">
-                <InputLabel>Country</InputLabel>
-                <Select
-                  label="Country"
-                  sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-                >
-                  {/* Populate with country options */}
-                  <MenuItem value="usa">United States</MenuItem>
-                  <MenuItem value="canada">Canada</MenuItem>
-                  {/* Add more countries as needed */}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-4 mb-3">
-              <TextField
-                label="City"
-                variant="filled"
-                fullWidth
-                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-              />
-            </div>
+          <div className="form-group">
+            <TextField label="Industries" variant="filled" fullWidth />
           </div>
-          <div className="row mb-3">
-            <div className="col-md-6 mb-3">
-              <TextField
-                label="Key Challenges"
-                variant="filled"
-                fullWidth
-                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <TextField
-                label="Goals"
-                variant="filled"
-                fullWidth
-                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0%)" }}
-              />
-            </div>
+          <div className="form-group">
+            <TextField label="Founding Year" variant="filled" fullWidth />
+          </div>
+          <div className="form-group">
+            <FormControl fullWidth variant="filled">
+              <InputLabel>Country</InputLabel>
+              <Select label="Country">
+                <MenuItem value="usa">United States</MenuItem>
+                <MenuItem value="canada">Canada</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="form-group">
+            <TextField label="City" variant="filled" fullWidth />
+          </div>
+          <div className="form-group">
+            <TextField label="Key Challenges" variant="filled" fullWidth />
+          </div>
+          <div className="form-group">
+            <TextField label="Goals" variant="filled" fullWidth />
           </div>
         </div>
       )}
 
       {activeSection === "team" && (
-        <div className="container border p-4 mt-4">
+        <div className="team-section">
           <Button variant="contained" color="primary">
             Add Member
           </Button>
