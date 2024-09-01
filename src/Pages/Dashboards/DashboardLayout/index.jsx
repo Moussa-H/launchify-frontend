@@ -12,9 +12,7 @@ const DashboardLayout = ({ sidebar, children }) => {
   return (
     <Container fluid>
       <Row>
-        <Col xs={2} className="sidebar p-0 bg-light">
-          {" "}
-          {/* Sidebar column */}
+        <Col xs={2} className="sidebar w-64 p-0 bg-light">
           {sidebar}
         </Col>
         <Col xs={10} className="main-content p-0">

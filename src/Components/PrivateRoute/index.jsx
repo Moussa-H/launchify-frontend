@@ -43,9 +43,15 @@ const PrivateRoute = ({ element, allowedRoles }) => {
     return <div>Loading...</div>; 
   }
 
-  if (!role) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+if (!role) {
+  // Clear local storage
+  localStorage.removeItem("token");
+  localStorage.removeItem("username");
+
+  // Redirect to login page
+  return <Navigate to="/login" state={{ from: location }} replace />;
+}
+
 
   if (!allowedRoles || !allowedRoles.includes(role)) {
     const dashboardPath = `/${role.toLowerCase()}-dashboard`;

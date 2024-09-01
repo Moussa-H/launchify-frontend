@@ -3,13 +3,13 @@
   background-color: #212735;
   height: 100vh;
   padding: 20px;
+      position: sticky;
+    top: 0;
+    overflow-y: auto;
+    z-index: 1000;
 }
 
-/* Sidebar logo */
-.sidebar-logo img {
-  max-width: 100%;
-  height: auto;
-}
+
 
 /* Sidebar link styles */
 .sidebar-link {
@@ -35,4 +35,18 @@
 .sidebar-link:hover {
   background-color: #343B49;
   color: #0A69D7;
+}
+
+.sidebar-logo img {
+    max-width: 100%;
+    height: auto;
+    width: 70%;
+}
+a.nav-link {
+    font-size: 17px;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+a.sidebar-link.active.nav-link span {
+    color: #0A69d7;
 }

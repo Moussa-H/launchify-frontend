@@ -1,0 +1,24 @@
+.custom-btn {
+  box-shadow: none; /* Remove shadow */
+  border-radius: 0; /* Remove border-radius on all corners */
+  border: 2px solid transparent; /* Transparent border to keep size */
+  position: relative; /* For positioning the bottom border */
+  background-color: transparent; /* Background color */
+  color: #007bff; /* Text color (Bootstrap primary color) */
+}
+
+.custom-btn.active {
+  background-color: #007bff; /* Background color for active state */
+  color: #fff; /* Text color for active state */
+  border: 2px solid #007bff; /* Border color for active state */
+}
+
+.custom-btn:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 2px solid #007bff; /* Bottom border color */
+}

@@ -1,47 +1,41 @@
-import React from "react";
-import { Container, Row, Col, Navbar, Nav, Dropdown } from "react-bootstrap";
-import { Outlet } from "react-router-dom";
-import MentorSidebar from "../../Components/Sidebars/MentorSidebar";
+import React, { useState } from "react";
+import DashboardLayout from "../Dashboards/DashboardLayout";
+import Sidebar from "../../Components/Sidebar";
+import { House, Notebook } from "lucide-react";
+import Profile from "../Dashboards/Startup/Profile";
+import Strategies from "../Dashboards/Startup/Strategies";
 
-const MentorDashboard = ({ title = "Startup Dashboard", username }) => {
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
+const MentorDashboard = () => {
+  const [activeLink, setActiveLink] = useState("profile");
+
+  const links = [
+    { to: "profile", label: "Profile", icon: <House /> }, // Icon for Profile
+    { to: "strategies", label: "Strategies", icon: <Notebook /> }, // Icon for Strategies
+  ];
+
+  const renderContent = () => {
+    switch (activeLink) {
+      case "profile":
+        return <Profile />;
+      case "strategies":
+        return <Strategies />;
+      default:
+        return <Profile />; // Default to Profile
+    }
   };
 
   return (
-    <Container fluid>
-      <Row>
-        <Col xs={2} className="sidebar p-0">
-          <MentorSidebar />
-        </Col>
-        <Col xs={10} className="main-content p-0">
-          <Navbar bg="light" expand="lg" className="mb-3">
-            <Container fluid>
-              <Navbar.Brand>{title}</Navbar.Brand>
-              <Nav className="ms-auto">
-                <Dropdown align="end">
-                  <Dropdown.Toggle
-                    variant="outline-secondary"
-                    id="dropdown-basic"
-                  >
-                    <i className="bi bi-person-circle"></i> {username}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleLogout}>
-                      <i className="bi bi-box-arrow-right"></i> Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Nav>
-            </Container>
-          </Navbar>
-          <Container fluid>
-            <Outlet /> {/* This is where the child routes will be rendered */}
-          </Container>
-        </Col>
-      </Row>
-    </Container>
+    <DashboardLayout
+      sidebar={
+        <Sidebar
+          links={links}
+          activeLink={activeLink}
+          onLinkClick={setActiveLink}
+        />
+      }
+    >
+      {renderContent()} {/* Render the content based on active link */}
+    </DashboardLayout>
   );
 };
 
