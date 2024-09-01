@@ -42,7 +42,7 @@ const DashboardLayout = ({ sidebar, children }) => {
               </Nav>
             </Container>
           </Navbar>
-          <Container fluid>
+          <Container fluid className="px-4">
             {children} {/* Render the passed children here */}
           </Container>
         </Col>

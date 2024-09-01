@@ -15,7 +15,10 @@
 .upload-box.dragging {
   background-color: #e0e0e0;
 }
-
+.container.border.p-4 {
+    width: 100%!important;
+    max-width: 100%;
+}
 .preview-image {
   max-height: 100%;
   max-width: 100%;
@@ -35,15 +38,25 @@
   border: 2px solid transparent;
   position: relative;
   background-color: transparent;
-  color: #007bff;
-}
+  color: #2E2E2E!important;
+      font-size: 14px;
+        padding: 10px 30px 6px 30px !important;
+    text-transform: capitalize!important;
 
+}
+button.custom-btn.active:hover{
+    background-color: #0B1D37!important;
+
+}
+button.custom-btn:hover{
+   background-color: transparent!important;
+}
 .custom-btn.active {
-  background-color: #007bff;
-  color: #fff;
-  border: 2px solid #007bff;
+      background-color: #0B1D37;
+    color: #fff!important;
+    border: 0px;
+    border-radius: 20px 20px 0px 0px!important;
 }
-
 .custom-btn:after {
   content: "";
   display: block;
@@ -51,16 +64,33 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 0px;
 }
+
 .col-md-3.d-flex.flex-column.align-items-center.justify-content-center {
   width: 21%;
 }
-
+.col-12.line-btn {
+    border-bottom: 1px solid #BBBBBB;
+}
 .row.mb-4 .col-md-9 {
   width: 79%;
 }
-
+.css-1oz3td-MuiAutocomplete-root {
+    width: 100%!important;
+}
+h4.mb-4.fs-7 {
+    font-size: 14px;
+    font-weight: 700;
+}
+.btn-current-round {
+  color: white;
+  background-color: #0a69d7;
+  font-weight: 500;
+  border-radius: 10px;
+  font-size: 12px;
+ 
+}
 .custom-add-sector-btn:hover {
   border: 1px solid #e0e0e0;
   background-color: #f0f0f0;
