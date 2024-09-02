@@ -3,52 +3,29 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export default function CountrySelect() {
+export default function CountrySelect({ value, onChange, ...props }) {
+  const selectedCountry =
+    countries.find((country) => country.label === value) || null;
+
   return (
     <Autocomplete
-      id="country-select-demo"
-      sx={{ width: 300 }}
       options={countries}
-      autoHighlight
-      getOptionLabel={(option) => option.label}
+      getOptionLabel={(option) => option.label || ""}
       renderOption={(props, option) => {
-        const { key, ...optionProps } = props;
+        const { key, ...restProps } = props;
+
         return (
-          <Box
-            key={key}
-            component="li"
-            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-            {...optionProps}
-          >
-            <img
-              loading="lazy"
-              width="20"
-              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-              alt=""
-            />
-            {option.label} ({option.code}) +{option.phone}
-          </Box>
+          <li key={key} {...restProps}>
+            {option.label} ({option.phone})
+          </li>
         );
       }}
-      renderInput={(params) => (
-        <TextField
-          variant="filled"
-          fullWidth
-          {...params}
-          label="Choose a country"
-          slotProps={{
-            htmlInput: {
-              ...params.inputProps,
-              autoComplete: "new-password", // disable autocomplete and autofill
-            },
-          }}
-        />
-      )}
+      renderInput={(params) => <TextField {...params} {...props} />}
+      value={selectedCountry}
+      onChange={onChange}
     />
   );
 }
-
 // From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
 const countries = [
   { code: "AD", label: "Andorra", phone: "376" },
@@ -220,7 +197,6 @@ const countries = [
   { code: "HU", label: "Hungary", phone: "36" },
   { code: "ID", label: "Indonesia", phone: "62" },
   { code: "IE", label: "Ireland", phone: "353" },
-  { code: "IL", label: "Israel", phone: "972" },
   { code: "IM", label: "Isle of Man", phone: "44" },
   { code: "IN", label: "India", phone: "91" },
   {
@@ -437,8 +413,7 @@ const countries = [
   {
     code: "US",
     label: "United States",
-    phone: "1",
-    suggested: true,
+    phone: "1"
   },
   { code: "UY", label: "Uruguay", phone: "598" },
   { code: "UZ", label: "Uzbekistan", phone: "998" },

@@ -44,7 +44,7 @@ const SectorPopup = ({ open, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
         Select Sectors
         <IconButton

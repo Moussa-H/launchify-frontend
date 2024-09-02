@@ -1,32 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
-  Button
+  Button,
+  MenuItem,
+  FormControl,
+  Select,
+  InputLabel,
+  LinearProgress,
+  Box,
+  Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 import CountrySelect from "../../../../Components/CountrySelect";
 import SectorPopup from "../../../../Components/SectorPopup";
+import axios from "axios";
 
-const Profile = () => {
+const Profile = ({ userId }) => {
   const [image, setImage] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
   const [popupOpen, setPopupOpen] = useState(false);
 
-  const handleAddSectorClick = () => {
-    setPopupOpen(true);
-  };
+  const [formData, setFormData] = useState({
+    company_name: "",
+    description: "",
+    founder: "",
+    industry: "",
+    founding_year: "",
+    country: "",
+    city: "",
+    key_challenges: "",
+    goals: "",
+    business_type: "",
+    company_stage: "",
+    employees_count: "",
+    phone_number: "",
+    email_address: "",
+    website_url: "",
+    currently_raising_type: "",
+    currently_raising_size: "",
+  });
 
-  const handleClosePopup = () => {
-    setPopupOpen(false);
+  // const [progress, setProgress] = useState(0);
+  const token = localStorage.getItem("token");
+console.log("token", token);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/startups/user`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log("Full API Response:", response.data);
+      console.log("Startup Data:", response.data.startup[0]); // Access the first element
+      if (response.data.startup.length > 0) {
+        setFormData(response.data.startup[0]); // Set the first element as form data
+        setImage(response.data.startup[0].image || null); // Handle image properly
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
+  fetchData();
+}, []);
+console.log("response.data.startup country", formData.country);
 
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+const handleCountryChange = (event, newValue) => {
+  setFormData((prevData) => ({
+    ...prevData,
+    country: newValue ? newValue.label : null,
+  }));
+  console.log("formData.country", formData.country);
+};
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+      setFormData((prevData) => ({ ...prevData, image: file }));
     }
   };
 
@@ -44,12 +104,53 @@ const Profile = () => {
     setDragging(false);
     const file = event.dataTransfer.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+      setFormData((prevData) => ({ ...prevData, image: file }));
     }
+  };
+
+  const handleSave = async () => {
+    const form = new FormData();
+    for (const key in formData) {
+      form.append(key, formData[key]);
+    }
+
+    try {
+      if (formData.id) {
+        await axios.put(`http://localhost:8000/api/startups/${userId}`, form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        await axios.post("http://localhost:8000/api/startups", form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+      alert("Data saved successfully!");
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Error saving data. Please try again.");
+    }
+  };
+
+  const handleAddSectorClick = () => {
+    setPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupOpen(false);
   };
 
   return (
     <div className="container border p-5 mt-5">
+      {/* Progress Bar */}
+
       {/* Image Upload Box */}
       <div className="row mb-4">
         <div className="col-12 col-md-3 d-flex flex-column align-items-center justify-content-center">
@@ -87,7 +188,14 @@ const Profile = () => {
         {/* Company Name and Description */}
         <div className="col-12 col-md-9">
           <div className="mb-3">
-            <TextField label="Company Name" variant="standard" fullWidth />
+            <TextField
+              label="Company Name"
+              variant="standard"
+              fullWidth
+              name="company_name"
+              value={formData.company_name || ""}
+              onChange={handleInputChange}
+            />
           </div>
           <div className="mb-3">
             <TextField
@@ -97,6 +205,9 @@ const Profile = () => {
               multiline
               variant="standard"
               fullWidth
+              name="description"
+              value={formData.description || ""}
+              onChange={handleInputChange}
             />
           </div>
           <Button
@@ -104,7 +215,7 @@ const Profile = () => {
             color="primary"
             startIcon={<AddIcon className="custom-add-icon" />}
             className="custom-add-sector-btn"
-            onClick={handleAddSectorClick} // Open the popup
+            onClick={handleAddSectorClick}
           >
             Add Sector
           </Button>
@@ -132,6 +243,8 @@ const Profile = () => {
           </Button>
         </div>
       </div>
+
+      {/* Overview Section */}
       {activeSection === "overview" && (
         <div className="container border-0 p-4 mt-4">
           <div className="row">
@@ -139,70 +252,89 @@ const Profile = () => {
               <h4 className="mb-4 fs-7">COMPANY REVIEW</h4>
             </div>
             <div className="col-12 col-md-6 mb-4">
-              <TextField label="Founder" variant="filled" fullWidth />
+              <TextField
+                label="Founder"
+                variant="filled"
+                fullWidth
+                name="founder"
+                value={formData.founder || ""}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="col-12 col-md-6 mb-4">
-              <TextField label="Industries" variant="filled" fullWidth />
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <TextField label="Founding Year" variant="filled" fullWidth />
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <CountrySelect
-                fullWidth
+              <TextField
+                label="Industries"
                 variant="filled"
-                className="autocomplete"
+                fullWidth
+                name="industry"
+                value={formData.industry || ""}
+                onChange={handleInputChange}
               />
             </div>
             <div className="col-12 col-md-4 mb-4">
-              <TextField label="City" variant="filled" fullWidth />
+              <TextField
+                label="Founding Year"
+                variant="filled"
+                fullWidth
+                name="founding_year"
+                value={formData.founding_year || ""}
+                onChange={handleInputChange}
+              />
             </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField label="Key Challenges" variant="filled" fullWidth />
+            <div className="col-12 col-md-4 mb-4">
+              <CountrySelect
+                label="Country"
+                fullWidth
+                variant="filled"
+                className="autocomplete"
+                name="country"
+                value={formData.country || null} // Pass `null` if `formData.country` is undefined
+                onChange={handleCountryChange}
+              />
             </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField label="Goals" variant="filled" fullWidth />
+            <div className="col-12 col-md-4 mb-4">
+              <TextField
+                label="City"
+                variant="filled"
+                fullWidth
+                name="city"
+                value={formData.city || ""}
+                onChange={handleInputChange}
+              />
             </div>
-          </div>
-
-          <hr className="mt-5 mb-4" />
-
-          <div className="row">
-            <div
-              className="col-6 mt-5 p-4"
-              style={{
-                backgroundColor: "#FFF2CC",
-                marginLeft: "auto",
-                marginRight: "auto",
-                borderRadius: "10px",
-              }}
-            >
-              <h4 className="mb-4 fs-7">CURRENTLY RAISING</h4>
-              <p style={{ fontSize: "14px", color: "#6D6D6D" }}>
-                The external funding the project needs now.
-              </p>
-              <Button variant="contained" className="btn-current-round">
-                Set Current Round
-              </Button>
+            <div className="col-12 mb-4">
+              <TextField
+                label="Key Challenges"
+                variant="filled"
+                fullWidth
+                name="key_challenges"
+                value={formData.key_challenges || ""}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="col-12 mb-4">
+              <TextField
+                label="Goals"
+                variant="filled"
+                fullWidth
+                name="goals"
+                value={formData.goals || ""}
+                onChange={handleInputChange}
+              />
             </div>
           </div>
         </div>
       )}
-      {activeSection === "team" && (
-        <div className="container border-0 p-4 mt-4">
-          <div className="row">
-            <div className="col-12">
-              <h4 className="mb-4 fs-7">TEAM MEMBERS</h4>
-            </div>
-            <div className="col-12">
-              <TextField label="Add Team Members" variant="filled" fullWidth />
-            </div>
-          </div>
-        </div>
-      )}
+
+      {/* Save Button */}
+      <div className="d-flex justify-content-end mt-4">
+        <Button variant="contained" color="primary" onClick={handleSave}>
+          Save
+        </Button>
+      </div>
 
       {/* Sector Popup */}
-      <SectorPopup open={popupOpen} onClose={handleClosePopup} />
+      {popupOpen && <SectorPopup onClose={handleClosePopup} />}
     </div>
   );
 };
