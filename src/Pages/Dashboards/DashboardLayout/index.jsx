@@ -1,12 +1,15 @@
 import React from "react";
 import { Container, Row, Col, Navbar, Nav, Dropdown } from "react-bootstrap";
+import "./style.css"
+import { useNavigate } from "react-router-dom";
 
 const DashboardLayout = ({ sidebar, children }) => {
   const username = localStorage.getItem("username");
+const navigate = useNavigate;
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/login";
+  navigate("/login")
   };
 
   return (
@@ -16,28 +19,19 @@ const DashboardLayout = ({ sidebar, children }) => {
           {sidebar}
         </Col>
         <Col xs={10} className="main-content p-0">
-          {" "}
-          {/* Main content column */}
           <Navbar bg="light" expand="lg" className="mb-3">
             <Container fluid>
-              <Navbar.Brand>Dashboard</Navbar.Brand>
               <Nav className="ms-auto">
-                <Navbar.Text className="me-3">
-                  <i className="bi bi-person-circle"></i> {username}{" "}
-                  {/* Display username */}
+                <Navbar.Text className="me-3 name">
+                  <div className="username-circle">{username.charAt(0)}</div>
+                  {username}
                 </Navbar.Text>
                 <Dropdown align="end">
-                  <Dropdown.Toggle
-                    variant="outline-secondary"
-                    id="dropdown-basic"
-                  >
-                    <i className="bi bi-person-circle"></i>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleLogout}>
-                      <i className="bi bi-box-arrow-right"></i> Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
+                      <i
+                        className="bi bi-box-arrow-right"
+                        onClick={handleLogout}
+                      ></i>{" "}
+  
                 </Dropdown>
               </Nav>
             </Container>
