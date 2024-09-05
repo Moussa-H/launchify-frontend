@@ -13,74 +13,81 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
-import CountrySelect from "../../../../Components/CountrySelect";
-import SectorPopup from "../../../../Components/SectorPopup";
+
+import AddSector from "../../../../Components/AddSector";
+import CurrentlyRaising from "../../../../Components/CurrentlyRaising";
+import CompanyReviewForm from "../../../../Components/CompanyReviewForm";
 import axios from "axios";
 
-const Profile = ({ userId }) => {
-  const [image, setImage] = useState(null);
-  const [dragging, setDragging] = useState(false);
-  const [activeSection, setActiveSection] = useState("overview");
-  const [popupOpen, setPopupOpen] = useState(false);
+const Profile = () => {
+ const [image, setImage] = useState(null);
+ const [dragging, setDragging] = useState(false);
+ const [activeSection, setActiveSection] = useState("overview");
+ const [sectors, setSectors] = useState([]);
+ const [investmentSources, setInvestmentSources] = useState([]);
 
-  const [formData, setFormData] = useState({
-    company_name: "",
-    description: "",
-    founder: "",
-    industry: "",
-    founding_year: "",
-    country: "",
-    city: "",
-    key_challenges: "",
-    goals: "",
-    business_type: "",
-    company_stage: "",
-    employees_count: "",
-    phone_number: "",
-    email_address: "",
-    website_url: "",
-    currently_raising_type: "",
-    currently_raising_size: "",
-  });
+ const [formData, setFormData] = useState({
+   company_name: "",
+   description: "",
+   founder: "",
+   industry: "",
+   founding_year: "",
+   country: "",
+   city: "",
+   key_challenges: "",
+   goals: "",
+   business_type: "",
+   company_stage: "",
+   employees_count: "",
+   phone_number: "",
+   email_address: "",
+   website_url: "",
+   currently_raising_type: "",
+   currently_raising_size: "",
+ });
 
   // const [progress, setProgress] = useState(0);
   const token = localStorage.getItem("token");
-console.log("token", token);
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/startups/user`,
-        {
+  console.log(token);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/startup`, {
           headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log("Full API Response:", response.data);
-      console.log("Startup Data:", response.data.startup[0]); // Access the first element
-      if (response.data.startup.length > 0) {
-        setFormData(response.data.startup[0]); // Set the first element as form data
-        setImage(response.data.startup[0].image || null); // Handle image properly
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  fetchData();
-}, []);
-console.log("response.data.startup country", formData.country);
+        });
 
+        if (response.data.startups.length > 0) {
+          const startup = response.data.startups[0];
+
+          setFormData({
+            ...startup,
+            currently_raising_type: startup.currently_raising_type || "",
+            currently_raising_size: startup.currently_raising_size || "",
+          });
+
+          setImage(startup.image || null);
+          setSectors(startup.sectors || []);
+          setInvestmentSources(startup.investment_sources || []);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [token]);
+  console.log("response.data.startup country", formData.country);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-const handleCountryChange = (event, newValue) => {
-  setFormData((prevData) => ({
-    ...prevData,
-    country: newValue ? newValue.label : null,
-  }));
-  console.log("formData.country", formData.country);
-};
+  const handleCountryChange = (event, newValue) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      country: newValue ? newValue.label : null,
+    }));
+    console.log("formData.country", formData.country);
+  };
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -118,7 +125,7 @@ const handleCountryChange = (event, newValue) => {
 
     try {
       if (formData.id) {
-        await axios.put(`http://localhost:8000/api/startups/${userId}`, form, {
+        await axios.put(`http://localhost:8000/api/startups`, form, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
@@ -137,14 +144,6 @@ const handleCountryChange = (event, newValue) => {
       console.error("Error saving data:", error);
       alert("Error saving data. Please try again.");
     }
-  };
-
-  const handleAddSectorClick = () => {
-    setPopupOpen(true);
-  };
-
-  const handleClosePopup = () => {
-    setPopupOpen(false);
   };
 
   return (
@@ -177,12 +176,6 @@ const handleCountryChange = (event, newValue) => {
               </div>
             )}
           </div>
-          <input
-            type="file"
-            id="uploadImage"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
         </div>
 
         {/* Company Name and Description */}
@@ -210,15 +203,7 @@ const handleCountryChange = (event, newValue) => {
               onChange={handleInputChange}
             />
           </div>
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<AddIcon className="custom-add-icon" />}
-            className="custom-add-sector-btn"
-            onClick={handleAddSectorClick}
-          >
-            Add Sector
-          </Button>
+          <AddSector sectors={sectors} />
         </div>
       </div>
 
@@ -247,82 +232,18 @@ const handleCountryChange = (event, newValue) => {
       {/* Overview Section */}
       {activeSection === "overview" && (
         <div className="container border-0 p-4 mt-4">
-          <div className="row">
-            <div className="col-12">
-              <h4 className="mb-4 fs-7">COMPANY REVIEW</h4>
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField
-                label="Founder"
-                variant="filled"
-                fullWidth
-                name="founder"
-                value={formData.founder || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-4">
-              <TextField
-                label="Industries"
-                variant="filled"
-                fullWidth
-                name="industry"
-                value={formData.industry || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <TextField
-                label="Founding Year"
-                variant="filled"
-                fullWidth
-                name="founding_year"
-                value={formData.founding_year || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <CountrySelect
-                label="Country"
-                fullWidth
-                variant="filled"
-                className="autocomplete"
-                name="country"
-                value={formData.country || null} // Pass `null` if `formData.country` is undefined
-                onChange={handleCountryChange}
-              />
-            </div>
-            <div className="col-12 col-md-4 mb-4">
-              <TextField
-                label="City"
-                variant="filled"
-                fullWidth
-                name="city"
-                value={formData.city || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="col-12 mb-4">
-              <TextField
-                label="Key Challenges"
-                variant="filled"
-                fullWidth
-                name="key_challenges"
-                value={formData.key_challenges || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="col-12 mb-4">
-              <TextField
-                label="Goals"
-                variant="filled"
-                fullWidth
-                name="goals"
-                value={formData.goals || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
+          <CompanyReviewForm
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleCountryChange={handleCountryChange}
+          />
+
+          <CurrentlyRaising
+            startupId={formData.id}
+            currently_raising_type={formData.currently_raising_type}
+            currently_raising_size={formData.currently_raising_size}
+            investment_sources={investmentSources}
+          />
         </div>
       )}
 
@@ -332,9 +253,6 @@ const handleCountryChange = (event, newValue) => {
           Save
         </Button>
       </div>
-
-      {/* Sector Popup */}
-      {popupOpen && <SectorPopup onClose={handleClosePopup} />}
     </div>
   );
 };
