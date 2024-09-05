@@ -1,0 +1,29 @@
+/* Add this CSS to your stylesheet */
+.sector-name {
+  border: 1px solid #a9a9a9;
+  color: #908b8b;
+  background: transparent;
+  border-radius: 40px;
+  padding: 4px 25px!important;
+  display: inline-block;
+  margin-right: 8px;
+font-size: 17px !important;
+}
+
+.btn-plus {
+  background: #0a69d7;
+  color: #fff;
+  border-radius: 50px;
+  padding: 2px;
+  font-size: 17px !important;
+}
+
+.btn-add-sector {
+  font-size: 13px;
+  color: #000 !important;
+  font-weight: 700;
+  border: 1px solid #a9a9a9!important;
+  border-radius: 40px!important;
+  padding: 5px 20px!important;
+  background-color: transparent;
+}
