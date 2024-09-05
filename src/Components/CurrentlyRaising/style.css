@@ -1,0 +1,45 @@
+/* Remove borders and set table to transparent */
+.table {
+  border-collapse: collapse;
+  background-color: transparent;
+  border: none;
+
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 1px solid #fff!important;
+ 
+}
+.table thead th {
+    vertical-align: bottom;
+    border: 0px!important;
+}
+.table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+
+      border: 0px!important;
+}
+.table>:not(caption)>{
+  border-bottom-width:0px!important;
+}
+/* Style for the Edit and Delete buttons */
+.btn-custom {
+ border: 1px solid #B3B3B3;
+  background-color: transparent;
+  color: #B3B3B3;
+  font-size: 15px;
+  border-radius: 10px;
+  margin-right: 10px; /* To make buttons close to each other */
+  padding: 4px 8px; 
+  text-align: right;
+}
+
+/* Ensure buttons are close together */
+.btn-group {
+    display: flex;
+    gap: 5px;
+    margin-right: auto;
+    justify-content: flex-end;
+}
