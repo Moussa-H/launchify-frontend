@@ -1,5 +1,5 @@
-// src/components/CurrentlyRaising.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Button,
   Dialog,
@@ -17,62 +17,58 @@ import { FaTrash } from "react-icons/fa";
 import "./style.css";
 
 const CurrentlyRaising = ({
+  token,
   startupId,
   currently_raising_type,
   currently_raising_size,
   investment_sources,
 }) => {
+  const [displayCurrentlyRaising, setDisplayCurrentlyRaising] = useState(false);
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState("");
-  const [size, setSize] = useState("");
+  const [type, setType] = useState(currently_raising_type || "");
+  const [raisingSize, setRaisingSize] = useState(currently_raising_size || "");
   const [errors, setErrors] = useState({
     type: false,
     size: false,
     sources: false,
   });
+
   const [investmentSources, setInvestmentSources] = useState({
-    BusinessAngel: false,
-    PublicGrant: false,
+    "Business Angel": false,
+    "Public grant": false,
     Accelerator: false,
     Corporate: false,
-    VCFund: false,
+    "VC Fund": false,
     Crowd: false,
   });
 
-  const handleOpen = () => {
-    setType(currently_raising_type);
-    setSize(currently_raising_size);
+  const [tableData, setTableData] = useState({
+    type: currently_raising_type,
+    size: currently_raising_size,
+    sources: investment_sources,
+  });
 
-    // Create an object to track which sources should be checked
-    const sources = {};
+  const handleOpen = () => {
+    setType(currently_raising_type || "");
+    setRaisingSize(currently_raising_size || "");
+
+    // Map selected investment sources
+    const updatedSources = { ...investmentSources };
     investment_sources.forEach((source) => {
-      sources[source.investment_source.replace(/\s+/g, "")] = true; // Map source to true
+      updatedSources[source.investment_source] = true;
     });
-  console.log("sources", sources);
-    // Set all checkboxes according to the sources object
-    setInvestmentSources((prevSources) => {
-      const updatedSources = { ...prevSources };
-      console.log("updatedSources",updatedSources);
-      Object.keys(updatedSources).forEach((key) => {
-        if (sources[key] !== undefined) {
-          updatedSources[key] = true; // Check the checkbox if the source is present
-        }
-      });
-      return updatedSources;
-    });
+    setInvestmentSources(updatedSources);
 
     setOpen(true);
   };
 
-  const handleClose = () => setOpen(false);
-
-  const handleSave = () => {
-    const isValid = validateForm();
-    if (isValid) {
-      // Proceed with saving the data
-      console.log({ type, size, investmentSources });
-      setOpen(false);
-    }
+  const handleClose = () => {
+    setOpen(false);
+    setErrors({
+      type: false,
+      size: false,
+      sources: false,
+    });
   };
 
   const validateForm = () => {
@@ -80,7 +76,7 @@ const CurrentlyRaising = ({
       (checked) => checked
     );
     const hasType = type !== "";
-    const hasSize = size !== "";
+    const hasSize = raisingSize !== "";
 
     setErrors({
       type: !hasType,
@@ -89,6 +85,84 @@ const CurrentlyRaising = ({
     });
 
     return hasType && hasSize && hasSelectedSource;
+  };
+
+  useEffect(() => {
+    if (!tableData || !tableData.type || !tableData.size) {
+      // Display the 'Set Current Round' view when no data exists
+      setDisplayCurrentlyRaising(false);
+    } else {
+      // Display the table with the 'currently raising' data
+      setDisplayCurrentlyRaising(true);
+    }
+  }, [tableData]);
+
+const handleDelete = async () => {
+  try {
+    // Delete investment sources
+    await axios.delete(
+      `http://localhost:8000/api/investment-sources/${startupId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    // Delete raising info
+    await axios.delete(
+      `http://localhost:8000/api/startup/investinfo/${startupId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    // Clear the data after successful deletion
+    setTableData(null); // Reset the tableData to null
+  } catch (error) {
+    console.error("Error occurred while deleting:", error);
+  }
+};
+
+
+  const handleSave = async () => {
+    if (!validateForm()) return;
+
+    try {
+      // API call for investment sources
+      const investmentData = {
+        investment_sources: Object.keys(investmentSources)
+          .filter((source) => investmentSources[source])
+          .map((source) => ({ investment_source: source })),
+      };
+      await axios.post(
+        `http://localhost:8000/api/investment-sources/${startupId}`,
+        investmentData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // API call for raising info
+      const raiseInfoData = {
+        currently_raising_type: type,
+        currently_raising_size: raisingSize,
+      };
+      await axios.post(
+        `http://localhost:8000/api/startup/investinfo/${startupId}`,
+        raiseInfoData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Update the table data with new values
+      setTableData({
+        type,
+        size: raisingSize,
+        sources: Object.keys(investmentSources).filter(
+          (source) => investmentSources[source]
+        ),
+      });
+
+      setOpen(false);
+    } catch (error) {
+      console.error("Error occurred while saving:", error);
+    }
   };
 
   const handleCheckboxChange = (event) => {
@@ -100,11 +174,11 @@ const CurrentlyRaising = ({
 
   return (
     <div className="row">
-      {currently_raising_type !== "" ? (
+      {displayCurrentlyRaising ? (
         <>
           <hr className="mt-5 mb-4"></hr>
           <div className="col-12">
-            <h4 className="mb-4 fs-7 ">CURRENTLY RAISING</h4>
+            <h4 className="mb-4 fs-7">CURRENTLY RAISING</h4>
           </div>
           <table className="table mt-1 border-0">
             <thead>
@@ -117,11 +191,11 @@ const CurrentlyRaising = ({
             </thead>
             <tbody>
               <tr>
-                <td>{currently_raising_type}</td>
-                <td>{currently_raising_size}</td>
+                <td>{tableData?.type}</td>
+                <td>{tableData?.size}</td>
                 <td>
-                  {investment_sources.map((source) => (
-                    <div key={source.id}>{source.investment_source}</div>
+                  {tableData?.sources.map((source, index) => (
+                    <div key={index}>{source}</div>
                   ))}
                 </td>
                 <td>
@@ -129,7 +203,7 @@ const CurrentlyRaising = ({
                     <button className="btn-custom" onClick={handleOpen}>
                       Edit
                     </button>
-                    <button className="btn-custom">
+                    <button className="btn-custom" onClick={handleDelete}>
                       <FaTrash />
                     </button>
                   </div>
@@ -161,6 +235,8 @@ const CurrentlyRaising = ({
           </Button>
         </div>
       )}
+
+      {/* Popup dialog for editing */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle className="title-popup">
           Currently Raising
@@ -176,27 +252,26 @@ const CurrentlyRaising = ({
         </DialogTitle>
         <DialogContent>
           <TextField
-            autoFocus
-            margin="dense"
-            id="type"
-            type="text"
             label="Investment Type"
-            fullWidth
             variant="filled"
+            fullWidth
+            name="investment_type"
+            select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            error={errors.type} // Add this line to show error state
+            error={errors.type}
             helperText={errors.type && "Investment Type is required"}
           >
-            <option value="Founders">Founders</option>
-            <option value="Family & Friends">Family & Friends</option>
-            <option value="Pre-seed">Pre-seed</option>
-            <option value="Seed">Seed</option>
-            <option value="Pre-series A">Pre-series A</option>
-            <option value="Series A">Series A</option>
-            <option value="Pre-series B">Pre-series B</option>
-            <option value="Series B">Series B</option>
-            <option value="Series C+">Series C+</option>
+            <MenuItem value="">Select Type</MenuItem>
+            <MenuItem value="Founders">Founders</MenuItem>
+            <MenuItem value="Family & Friends">Family & Friends</MenuItem>
+            <MenuItem value="Pre-seed">Pre-seed</MenuItem>
+            <MenuItem value="Seed">Seed</MenuItem>
+            <MenuItem value="Pre-series A">Pre-series A</MenuItem>
+            <MenuItem value="Series A">Series A</MenuItem>
+            <MenuItem value="Pre-series B">Pre-series B</MenuItem>
+            <MenuItem value="Series B">Series B</MenuItem>
+            <MenuItem value="Series C+">Series C+</MenuItem>
           </TextField>
 
           <TextField
@@ -207,12 +282,12 @@ const CurrentlyRaising = ({
             type="number"
             fullWidth
             variant="filled"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
+            value={raisingSize}
+            onChange={(e) => setRaisingSize(e.target.value)}
             InputProps={{
               inputProps: { step: "0.01" },
             }}
-            error={errors.size} // Add error state
+            error={errors.size}
             helperText={errors.size && "Size is required"}
           />
 
@@ -229,17 +304,14 @@ const CurrentlyRaising = ({
                       name={source}
                     />
                   }
-                  label={source
-                    .replace(/([A-Z])/g, " $1")
-                    .replace(/^./, (str) => str.toUpperCase())}
+                  label={source}
                 />
               ))}
               {errors.sources && (
                 <p style={{ color: "red" }}>
                   At least one source must be selected
                 </p>
-              )}{" "}
-              {/* Error message for checkboxes */}
+              )}
             </div>
           </div>
         </DialogContent>
