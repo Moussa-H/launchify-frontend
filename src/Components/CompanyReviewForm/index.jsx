@@ -50,8 +50,8 @@ const CompanyReviewForm = ({
             variant="filled"
             className="autocomplete"
             name="country"
-            value={formData.country || null}
-            onChange={handleCountryChange}
+            value={formData.country || null} // Controlled value
+            onChange={(event, newValue) => handleCountryChange(newValue)} // Correctly call handler
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
