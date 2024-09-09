@@ -1,0 +1,12 @@
+.date-flex {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 40px;
+}
+.display-center{
+    justify-content: center;
+}
+.btn-save {
+    display: flex;
+    justify-content: flex-end;
+}
