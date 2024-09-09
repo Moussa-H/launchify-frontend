@@ -19,22 +19,23 @@
   padding: 10px 15px;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 10px;
 }
 
 /* Active sidebar link styles */
 .sidebar-link.active {
   background-color: #343B49;
-  color: #0A69D7;
+  color: #ffffff!important;
 }
 
 .sidebar-link.active svg {
-  color: #0A69D7;
+  color: #ffffff;
 }
 
 /* Sidebar link hover effect */
 .sidebar-link:hover {
   background-color: #343B49;
-  color: #0A69D7;
+  color: #ffffff;
 }
 
 .sidebar-logo img {
@@ -48,5 +49,5 @@ a.nav-link {
     font-weight: 500;
 }
 a.sidebar-link.active.nav-link span {
-    color: #0A69d7;
+    color: #ffffff;
 }
