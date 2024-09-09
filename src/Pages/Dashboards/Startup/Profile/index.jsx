@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
@@ -17,9 +15,8 @@ const Profile = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [sectors, setSectors] = useState([]);
   const [investmentSources, setInvestmentSources] = useState([]);
-
+  const [startupId, setStartupid] = useState("");
   const [formData, setFormData] = useState({
-    image: null,
     company_name: "",
     description: "",
     founder: "",
@@ -39,9 +36,8 @@ const Profile = () => {
     currently_raising_size: "",
   });
 
-  // const [progress, setProgress] = useState(0);
   const token = localStorage.getItem("token");
-  console.log(token);
+console.log(token)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,10 +47,26 @@ const Profile = () => {
 
         if (response.data.startups.length > 0) {
           const startup = response.data.startups[0];
-
-          setFormData(startup);
-          console.log("startup", startup);
-          console.log("formData", formData);
+          setStartupid(startup.id);
+          setFormData({
+            company_name: startup.company_name || "",
+            description: startup.description || "",
+            founder: startup.founder || "",
+            industry: startup.industry || "",
+            founding_year: startup.founding_year || "",
+            country: startup.country || "",
+            city: startup.city || "",
+            key_challenges: startup.key_challenges || "",
+            goals: startup.goals || "",
+            business_type: startup.business_type || "",
+            company_stage: startup.company_stage || "",
+            employees_count: startup.employees_count || "",
+            phone_number: startup.phone_number || "",
+            email_address: startup.email_address || "",
+            website_url: startup.website_url || "",
+            currently_raising_type: startup.currently_raising_type || "",
+            currently_raising_size: startup.currently_raising_size || "",
+          });
           setImage(startup.image || null);
           setSectors(startup.sectors || []);
           setInvestmentSources(startup.investment_sources || []);
@@ -65,45 +77,61 @@ const Profile = () => {
     };
     fetchData();
   }, [token]);
-  console.log("response.data.startup country", formData.country);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-const handleCountryChange = (newValue) => {
-  // Update formData.country in the state
-  setFormData((prevData) => ({
-    ...prevData,
-    country: newValue ? newValue.label : null,
-  }));
+
+  const handleCountryChange = (newValue) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      country: newValue ? newValue.label : "",
+    }));
+  };
+
+const handleSave = async () => {
+  const apiUrl = "http://localhost:8000/api/startup";
+
+  const data = new FormData();
+
+  // Append all form fields
+  for (const key in formData) {
+    if (Object.hasOwnProperty.call(formData, key)) {
+      data.append(key, formData[key]);
+    }
+  }
+
+  console.log("image", image);
+  console.log("formData", formData);
+
+  // Append image if it exists
+  if (image) {
+    data.append("image", image);
+  }
+
+  try {
+    if (!startupId) {
+      const response = await axios.post(apiUrl, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Startup created:", response.data);
+    } else {
+      const response = await axios.put(`${apiUrl}/${startupId}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Startup updated:", response.data);
+    }
+  } catch (error) {
+    console.error("Error saving startup data:", error);
+  }
 };
- const handleSave = async () => {
-   const apiUrl = `http://localhost:8000/api/startup`;
-   const startupId = formData.id; // Check if startupId exists
-
-   try {
-     if (!startupId) {
-        console.log("startupId", startupId);
-        console.log("FormData being sent:", formData);
-
-       // If no startup ID, create a new startup
-       const response = await axios.post(apiUrl, formData, {
-         headers: { Authorization: `Bearer ${token}` },
-       });
-       console.log("Startup created:", response.data);
-     } else {
-       // If startup ID exists, update the existing startup
-       const response = await axios.put(`${apiUrl}/${startupId}`, formData, {
-         headers: { Authorization: `Bearer ${token}` },
-       });
-       console.log("Startup updated:", response.data);
-     }
-   } catch (error) {
-     console.error("Error saving startup data:", error);
-   }
- };
-
 
   return (
     <div className="container border p-5 mt-5">
