@@ -13,7 +13,12 @@
   height: 100vh;
   object-fit: cover;
 }
-
+.banner-content h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 60px;
+}
 .banner-content {
   position: absolute;
   top: 50%;
@@ -23,11 +28,6 @@
   text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.banner-content h1 {
-  font-size: 2.4rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
 
 .banner-content h3 {
   font-size: 1.5rem;
