@@ -4,9 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "../../assets/logo.svg";
 import "./style.css";
 
-function Navbar() {
+function Navbar({comp}) {
+    const navClassName = `navbar navbar-expand-lg navbar-light bg-transparent${
+      comp === "home" ? " abs" : ""
+    }`;
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-transparent">
+    <nav className={navClassName}>
       <div className="container-fluid w-90 mx-auto py-4">
         <Link className="navbar-brand" to="/">
           <img src={logo} alt="Logo" />
