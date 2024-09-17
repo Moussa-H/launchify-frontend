@@ -13,28 +13,41 @@ import "./style.css";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 
-const AddSector = ({ sectors }) => {
+const AddSector = ({ sectors, startupId }) => {
   const [open, setOpen] = useState(false);
   const [allSectors, setAllSectors] = useState([]);
   const [selectedSectors, setSelectedSectors] = useState([]);
+  const [displaySectors, setDisplaySectors] = useState(sectors);
+  const token = localStorage.getItem("token");
+  console.log("sectors", sectors);
 
-useEffect(() => {
-  if (open) {
-    // Fetch sectors when the dialog is opened
-    axios
-      .get("http://localhost:8000/api/sectors")
-      .then((response) => {
-        setAllSectors(response.data);
+  useEffect(() => {
+    if (open) {
+      // Fetch sectors when the dialog is opened
+      axios
+        .get("http://localhost:8000/api/sectors", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add token to request header
+          },
+        })
+        .then((response) => {
+          setAllSectors(response.data);
 
-        // Set selected sectors based on props
-        const startupSectorIds = sectors.map((sector) => sector.id);
-        setSelectedSectors(startupSectorIds);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the sectors!", error);
-      });
-  }
-}, [open, sectors]);
+          // Set selected sectors based on props
+          const startupSectorIds = displaySectors.map((sector) => sector.id);
+          setSelectedSectors(startupSectorIds);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the sectors!", error);
+        });
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (sectors && sectors.length > 0) {
+      setDisplaySectors(sectors); // Update state when sectors prop changes
+    }
+  }, [sectors]);
 
   const handleSectorClick = (sector) => {
     setSelectedSectors((prevSelected) => {
@@ -50,8 +63,35 @@ useEffect(() => {
   };
 
   const handleSave = () => {
-    console.log("Selected Sectors:", selectedSectors);
-    setOpen(false);
+    const sectorData = selectedSectors.map((id) => {
+      const sector = allSectors.find((sector) => sector.id === id);
+      return { id: sector.id, name: sector.name }; // Include both id and name
+    });
+    axios
+      .post(
+        `http://localhost:8000/api/sectors/${startupId}`,
+        { sectors: sectorData }, // Request body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Sectors updated successfully:", response.data);
+        setOpen(false); // Close the dialog after successful API call
+
+        const updatedSectors = sectorData.filter((sector) =>
+          selectedSectors.includes(sector.id)
+        );
+        console.log("selectedSectors", selectedSectors);
+        console.log("updatedSectors", updatedSectors);
+        setDisplaySectors(updatedSectors);
+      })
+      .catch((error) => {
+        console.error("There was an error updating the sectors!", error);
+      });
   };
 
   return (
@@ -62,9 +102,10 @@ useEffect(() => {
           alignItems: "center",
           gap: "8px",
           marginTop: "20px",
+          flexWrap: "wrap",
         }}
       >
-        {sectors.map((sector) => (
+        {displaySectors.map((sector) => (
           <Typography key={sector.id} variant="body2" className="sector-name">
             {sector.name}
           </Typography>
@@ -124,7 +165,7 @@ useEffect(() => {
                     flexGrow: 1,
                     minWidth: "120px",
                     marginBottom: "8px",
-                    borderRadius:"40px",
+                    borderRadius: "40px",
                   }}
                 >
                   {sector.name}
@@ -138,9 +179,6 @@ useEffect(() => {
           </div>
         </DialogContent>
         <DialogActions style={{ justifyContent: "space-between" }}>
-          <Button onClick={() => setOpen(false)} color="primary">
-            Close
-          </Button>
           <Button onClick={handleSave} color="primary">
             Save
           </Button>
