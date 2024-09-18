@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 const PrivateRoute = ({ element, allowedRoles }) => {
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,9 +40,21 @@ const PrivateRoute = ({ element, allowedRoles }) => {
     fetchRole();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>; 
-  }
+ if (loading) {
+   return (
+     <Box
+       sx={{
+         display: "flex",
+         justifyContent: "center",
+         alignItems: "center",
+         height: "100vh", // Full-screen height
+       }}
+     >
+       <CircularProgress /> {/* Material-UI loading spinner */}
+     </Box>
+   );
+ }
+
 
 if (!role) {
   // Clear local storage
