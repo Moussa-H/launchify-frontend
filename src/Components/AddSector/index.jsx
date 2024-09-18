@@ -13,7 +13,8 @@ import "./style.css";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 
-const AddSector = ({ sectors, startupId }) => {
+const AddSector = ({ sectors, startupId=null }) => {
+
   const [open, setOpen] = useState(false);
   const [allSectors, setAllSectors] = useState([]);
   const [selectedSectors, setSelectedSectors] = useState([]);
