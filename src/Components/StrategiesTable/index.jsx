@@ -8,11 +8,9 @@ import {
   TableRow,
   Paper,
   Typography,
-  Box,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  IconButton,
   Select,
   MenuItem,
   CircularProgress,
@@ -74,13 +72,13 @@ const formatActionStepsAndChallenges = (description) => {
 };
 
 // Main component
-const StrategiesTable = ({ strategies, token }) => {
+const StrategiesTable = ({ strategies = {}, token }) => {
   const [expandedRows, setExpandedRows] = useState({});
-  const [strategyStatus, setStrategyStatus] = useState({
-    ...Object.keys(strategies)
+  const [strategyStatus, setStrategyStatus] = useState(
+    Object.keys(strategies)
       .filter((key) => key.startsWith("strategy_") && key.endsWith("_status"))
-      .reduce((acc, key) => ({ ...acc, [key]: strategies[key] }), {}),
-  });
+      .reduce((acc, key) => ({ ...acc, [key]: strategies[key] }), {})
+  );
   const [loadingStatus, setLoadingStatus] = useState(null);
   const [statusError, setStatusError] = useState(null);
 
@@ -94,9 +92,6 @@ const StrategiesTable = ({ strategies, token }) => {
   const handleStatusChange = debounce(async (strategyKey, newStatus) => {
     setLoadingStatus(strategyKey);
     setStatusError(null);
-    console.log("strategyKey", strategyKey);
-    console.log("newStatus", newStatus);
-    console.log("token", token);
     try {
       // Perform API call to update the status
       const response = await axios.post(
@@ -104,16 +99,13 @@ const StrategiesTable = ({ strategies, token }) => {
         { [strategyKey]: newStatus },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Replace with your actual token
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
-      console.log("response.data", response.data);
-
-      // Check if the API call was successful
+      console.log("response.data",response.data);
       if (response.data.status === "success") {
-        console.log("test");
         setStrategyStatus((prevStatus) => ({
           ...prevStatus,
           [strategyKey]: newStatus,
@@ -124,9 +116,10 @@ const StrategiesTable = ({ strategies, token }) => {
     } finally {
       setLoadingStatus(null);
     }
-  }, 300); // Adjust debounce delay as necessary
+  }, 300);
 
-  if (!strategies) return null;
+  // Check if strategies is valid and has the necessary data
+  if (!strategies || Object.keys(strategies).length === 0) return null;
 
   return (
     <TableContainer component={Paper}>
