@@ -1,0 +1,30 @@
+.dashboard-container{
+    width:100%!important;
+    max-width: 95%!important;
+}
+.title-graph {
+    font-weight: 500!important;
+    font-size: 15px!important;
+}
+.chart-container {
+  margin-top: 20px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+
+.chart-container {
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+}
+ .pie-container {
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    padding-top:30px;
+    height: 420px!important;
+} 
