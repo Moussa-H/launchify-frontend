@@ -9,14 +9,14 @@ import ImageUpload from "../../../../Components/ImageUpload";
 import CurrentlyRaising from "../../../../Components/CurrentlyRaising";
 import CompanyReviewForm from "../../../../Components/CompanyReviewForm";
 import axios from "axios";
-
+import AddMember from "../../../../Components/AddMember";
+import { Box } from "@mui/material";
 const Profile = () => {
-  const [image, setImage] = useState(null);
   const [activeSection, setActiveSection] = useState("overview");
   const [sectors, setSectors] = useState([]);
   const [investmentSources, setInvestmentSources] = useState([]);
-  const [startupId, setStartupid] = useState("");
   const [formData, setFormData] = useState({
+    image: null,
     company_name: "",
     description: "",
     founder: "",
@@ -36,40 +36,28 @@ const Profile = () => {
     currently_raising_size: "",
   });
 
+  const [image, setImage] = useState(null);
+
   const token = localStorage.getItem("token");
-console.log(token)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/startup`, {
+        const response = await axios.get("http://localhost:8000/api/startup", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.data.startups.length > 0) {
           const startup = response.data.startups[0];
-          setStartupid(startup.id);
-          setFormData({
-            company_name: startup.company_name || "",
-            description: startup.description || "",
-            founder: startup.founder || "",
-            industry: startup.industry || "",
-            founding_year: startup.founding_year || "",
-            country: startup.country || "",
-            city: startup.city || "",
-            key_challenges: startup.key_challenges || "",
-            goals: startup.goals || "",
-            business_type: startup.business_type || "",
-            company_stage: startup.company_stage || "",
-            employees_count: startup.employees_count || "",
-            phone_number: startup.phone_number || "",
-            email_address: startup.email_address || "",
-            website_url: startup.website_url || "",
-            currently_raising_type: startup.currently_raising_type || "",
-            currently_raising_size: startup.currently_raising_size || "",
-          });
-          setImage(startup.image || null);
+
+          setFormData((prevValues) => ({
+            ...prevValues,
+            ...startup,
+            image: startup.image || null, // Setting image if exists
+          }));
           setSectors(startup.sectors || []);
           setInvestmentSources(startup.investment_sources || []);
+          setImage(startup.image || null);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -90,57 +78,96 @@ console.log(token)
     }));
   };
 
-const handleSave = async () => {
-  const apiUrl = "http://localhost:8000/api/startup";
+  const handleSave = async () => {
+    const apiUrl = "http://localhost:8000/api/startup";
+    const data = new FormData();
 
-  const data = new FormData();
-
-  // Append all form fields
-  for (const key in formData) {
-    if (Object.hasOwnProperty.call(formData, key)) {
-      data.append(key, formData[key]);
+    // Append all form fields from formData
+    for (const key in formData) {
+      if (Object.hasOwnProperty.call(formData, key)) {
+        data.append(key, formData[key]);
+      }
     }
-  }
 
-  console.log("image", image);
-  console.log("formData", formData);
-
-  // Append image if it exists
-  if (image) {
-    data.append("image", image);
-  }
-
-  try {
-    if (!startupId) {
-      const response = await axios.post(apiUrl, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("Startup created:", response.data);
-    } else {
-      const response = await axios.put(`${apiUrl}/${startupId}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("Startup updated:", response.data);
+    // Append image if it exists
+    if (image) {
+      data.append("image", image);
     }
-  } catch (error) {
-    console.error("Error saving startup data:", error);
-  }
-};
+
+    const startupId = formData.id;
+    try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      };
+
+      if (!startupId) {
+        // Create new startup
+        const response = await axios.post(apiUrl, data, { headers });
+        console.log("Startup created:", response.data);
+      } else {
+        // Update existing startup
+        const response = await axios.put(`${apiUrl}/${startupId}`, data, {
+          headers,
+        });
+        console.log("Startup updated:", response.data);
+      }
+    } catch (error) {
+      console.error("Error saving startup data:", error);
+    }
+  };
+
+  const handleImageChange = (event) => {
+    setFormData((prevValues) => ({
+      ...prevValues,
+      image: event.target.files[0],
+    }));
+  };
 
   return (
     <div className="container border p-5 mt-5">
       <div className="row mb-4">
         <div className="col-12 col-md-3 d-flex flex-column align-items-center justify-content-center">
-          <ImageUpload
-            image={image}
-            setImage={setImage}
-            setFormData={setFormData}
+          <Box
+            sx={{
+              paddingLeft: "0px!important",
+              width: "170px",
+              height: "170px",
+              border: "2px solid #ccc",
+              borderRadius: "8px",
+              overflow: "hidden",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            onClick={() => document.getElementById("imageUpload").click()}
+          >
+            {formData.image ? (
+              <img
+                src={
+                  typeof formData.image === "object"
+                    ? URL.createObjectURL(formData.image)
+                    : formData.image
+                }
+                alt="Profile"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  padding: "10px",
+                }}
+              />
+            ) : (
+              <span>Select Image</span>
+            )}
+          </Box>
+          <input
+            accept="image/*"
+            type="file"
+            id="imageUpload"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
           />
         </div>
         <div className="col-12 col-md-9">
@@ -193,6 +220,9 @@ const handleSave = async () => {
             </Button>
           </div>
         </div>
+      )}
+      {activeSection === "team" && (
+        <AddMember token={token} startupId={formData.id} />
       )}
     </div>
   );
