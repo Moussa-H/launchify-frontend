@@ -1,0 +1,19 @@
+.custom-title {
+  font-size: 14px;
+  color: #848484;
+  font-weight: 400;
+}
+
+.custom-number {
+  font-weight: 700;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.custom-lastyear {
+  font-size: 12px;
+}
+.justify-content-center{
+  margin-bottom: 30px;
+}
