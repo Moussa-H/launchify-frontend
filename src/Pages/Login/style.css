@@ -10,11 +10,22 @@
   border-radius: 8px;
   background-color: #fff;
 }
-
+.fade.text-center.alert.alert-danger.show {
+    padding: 5px;
+    font-size: 13px;
+}
 .Login-logo {
   width: 200px;
 }
-
+.login-link:hover {
+    text-decoration: none;
+}
+.justify-content-center {
+    margin-bottom: 0px!important;
+}
+.fade.text-center.alert.alert-danger.show {
+    padding: 5px;
+}
 .Login-button {
   background-color: #0a69d7;
   border: none;
