@@ -1,0 +1,27 @@
+.css-lc42l8-MuiInputBase-input-MuiOutlinedInput-input {
+    font-size: 13px !important;
+    padding: 2px !important;
+    padding-left: 10px !important;
+    width: 100px !important;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border: 0px!important;
+    font-size: 13px;
+}
+tr {
+    font-size: 13px;
+}
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+ 
+    --bs-table-bg-type: #F6F6F6;
+}
+.table td, .table th {
+    padding: .45rem;
+    vertical-align: top;
+    border: 0px!important;
+}
+table.mt-3.table.table-striped.table-bordered.table-hover {
+    border: 1px solid #e1e1e1;
+}
