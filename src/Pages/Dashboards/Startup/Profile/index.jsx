@@ -11,6 +11,7 @@ import CompanyReviewForm from "../../../../Components/CompanyReviewForm";
 import axios from "axios";
 import AddMember from "../../../../Components/AddMember";
 import { Box } from "@mui/material";
+
 const Profile = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [sectors, setSectors] = useState([]);
@@ -36,7 +37,7 @@ const Profile = () => {
     currently_raising_size: "",
   });
 
-  const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({}); // To store validation errors
 
   const token = localStorage.getItem("token");
 
@@ -57,7 +58,6 @@ const Profile = () => {
           }));
           setSectors(startup.sectors || []);
           setInvestmentSources(startup.investment_sources || []);
-          setImage(startup.image || null);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -65,6 +65,22 @@ const Profile = () => {
     };
     fetchData();
   }, [token]);
+
+  const validateFormData = () => {
+    let formErrors = {};
+    let isValid = true;
+
+    // Check required fields
+    for (const [key, value] of Object.entries(formData)) {
+      if (key !== "image" && !value) {
+        formErrors[key] = `${key.replace(/_/g, " ")} is required.`;
+        isValid = false;
+      }
+    }
+
+    setErrors(formErrors);
+    return isValid;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -79,19 +95,16 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
+    if (!validateFormData()) {
+      return; // Stop if validation fails
+    }
+
     const apiUrl = "http://localhost:8000/api/startup";
     const data = new FormData();
 
-    // Append all form fields from formData
-    for (const key in formData) {
-      if (Object.hasOwnProperty.call(formData, key)) {
-        data.append(key, formData[key]);
-      }
-    }
-
-    // Append image if it exists
-    if (image) {
-      data.append("image", image);
+    // Append each field to FormData
+    for (const [key, value] of Object.entries(formData)) {
+      data.append(key, value);
     }
 
     const startupId = formData.id;
@@ -100,7 +113,6 @@ const Profile = () => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       };
-
       if (!startupId) {
         // Create new startup
         const response = await axios.post(apiUrl, data, { headers });
@@ -113,7 +125,10 @@ const Profile = () => {
         console.log("Startup updated:", response.data);
       }
     } catch (error) {
-      console.error("Error saving startup data:", error);
+      console.error(
+        "Error saving startup data:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -204,6 +219,7 @@ const Profile = () => {
             formData={formData}
             handleInputChange={handleInputChange}
             handleCountryChange={handleCountryChange}
+            errors={errors}
           />
 
           <CurrentlyRaising

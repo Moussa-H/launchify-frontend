@@ -3,6 +3,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
 import PopupMember from "../PopupMember";
 import MembersTable from "../MembersTable";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Box } from "@mui/material";
 import "./style.css";
 import axios from "axios";
 
@@ -108,7 +110,15 @@ export default function AddMember({ startupId, token }) {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress /> {/* Material-UI loading spinner */}
+        </Box>
       ) : (
         <div className="members-container">
           {members.length > 0 ? (
@@ -174,7 +184,6 @@ export default function AddMember({ startupId, token }) {
             token={token}
             startupId={startupId}
           />
-          
         </div>
       )}
     </>

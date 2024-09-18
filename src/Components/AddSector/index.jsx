@@ -6,21 +6,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Typography,
 } from "@mui/material";
 import "./style.css";
 import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
 
-const AddSector = ({ sectors, startupId=null }) => {
-
+const AddSector = ({ sectors, startupId = null }) => {
   const [open, setOpen] = useState(false);
   const [allSectors, setAllSectors] = useState([]);
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [displaySectors, setDisplaySectors] = useState(sectors);
   const token = localStorage.getItem("token");
-  console.log("sectors", sectors);
 
   useEffect(() => {
     if (open) {
@@ -80,14 +76,11 @@ const AddSector = ({ sectors, startupId=null }) => {
         }
       )
       .then((response) => {
-        console.log("Sectors updated successfully:", response.data);
         setOpen(false); // Close the dialog after successful API call
 
         const updatedSectors = sectorData.filter((sector) =>
           selectedSectors.includes(sector.id)
         );
-        console.log("selectedSectors", selectedSectors);
-        console.log("updatedSectors", updatedSectors);
         setDisplaySectors(updatedSectors);
       })
       .catch((error) => {
@@ -116,6 +109,8 @@ const AddSector = ({ sectors, startupId=null }) => {
           className="btn-add-sector"
           startIcon={<AddIcon className="btn-plus" />}
           onClick={() => setOpen(true)}
+        
+          color="primary"
         >
           Add Sector
         </Button>
@@ -127,18 +122,7 @@ const AddSector = ({ sectors, startupId=null }) => {
         fullWidth
         maxWidth="md"
       >
-        <DialogTitle>
-          Select Sectors
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={() => setOpen(false)}
-            aria-label="close"
-            style={{ position: "absolute", right: 8, top: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+        <DialogTitle>Select Sectors</DialogTitle>
         <DialogContent>
           <div
             className="sector-popup-content"
@@ -160,13 +144,21 @@ const AddSector = ({ sectors, startupId=null }) => {
                       ? "contained"
                       : "outlined"
                   }
-                  color="primary"
+                  color={
+                    selectedSectors.includes(sector.id) ? "primary" : "default"
+                  }
                   onClick={() => handleSectorClick(sector)}
                   style={{
                     flexGrow: 1,
                     minWidth: "120px",
                     marginBottom: "8px",
                     borderRadius: "40px",
+                    backgroundColor: selectedSectors.includes(sector.id)
+                      ? "#1976d2"
+                      : "#ffffff", // Primary color
+                    color: selectedSectors.includes(sector.id)
+                      ? "#ffffff"
+                      : "#1976d2", // Text color
                   }}
                 >
                   {sector.name}
@@ -179,8 +171,16 @@ const AddSector = ({ sectors, startupId=null }) => {
             )}
           </div>
         </DialogContent>
-        <DialogActions style={{ justifyContent: "space-between" }}>
-          <Button onClick={handleSave} color="primary">
+        <DialogActions style={{ justifyContent: "flex-end" }}>
+          <Button
+            onClick={() => setOpen(false)}
+            color="default"
+            variant="contained"
+            style={{ marginRight: "8px" }}
+          >
+            Close
+          </Button>
+          <Button onClick={handleSave} color="primary" variant="contained">
             Save
           </Button>
         </DialogActions>

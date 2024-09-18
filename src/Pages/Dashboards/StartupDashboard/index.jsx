@@ -10,6 +10,7 @@ import MentorDirectory from "../Startup/MentorDirectory"; // Import Mentor Direc
 import MentorMatch from "../Startup/MentorMatch"; // Import Mentor Match page
 import { Routes, Route, useNavigate } from "react-router-dom";
 import ChatMessages from "../Startup/ChatMessages";
+import StrategiesTable from "../../../Components/StrategiesTable";
 
 const StartupDashboard = () => {
   const token=localStorage.getItem("token")
@@ -53,6 +54,10 @@ const StartupDashboard = () => {
       <Routes>
         <Route path="profile" element={<Profile />} />
         <Route path="strategies" element={<Strategies token={token} />} />
+        <Route
+          path="strategies/strategies-table"
+          element={<StrategiesTable token={token} />}
+        />
         <Route path="data-entry" element={<DataEntry />} />
         <Route path="finance-dashboard" element={<FinanceDashboard />} />
         <Route path="mentor-directory" element={<MentorDirectory />} />{" "}
@@ -63,7 +68,6 @@ const StartupDashboard = () => {
           path="mentor-directory/chats/:mentorId"
           element={<ChatMessages />}
         />
-       
       </Routes>
     </DashboardLayout>
   );
