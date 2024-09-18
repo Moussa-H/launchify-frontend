@@ -7,25 +7,25 @@ import { Link } from "react-router-dom";
 import TestimonialSlider from "../../Components/TestimonialSlider";
 function Home() {
   return (
-    <Layout>
+    <Layout comp={"home"}>
       <div className="container my-5">
         <div className="row align-items-center">
-          <div className="col-lg-6 text-left px-3">
+          <div className="col-lg-6 text-left px-3 ">
             <h2>All-In-One Platform for Startups</h2>
             <p>
               Empowering startup founders, VC funds, angels, accelerators, and
               corporates with the right community, infrastructure, and tools to
               succeed.
             </p>
-            <JoinNowButton />
+            <JoinNowButton className="white-btn" />
           </div>
           <div className="col-lg-6 text-center">
             <img src={Hero} alt="All-In-One Platform" className="img-fluid" />
           </div>
         </div>
         <div className="text-center my-5">
-          <h1 className="home-title px-1">
-            <span className="text-dark-gray">
+          <h1 className="home-title px- mt-5">
+            <span className="text-dark-gray ">
               Boost Your Success with Powerful
             </span>
             <br />
