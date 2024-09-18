@@ -6,11 +6,10 @@ const Sidebar = ({ links, activeLink, onLinkClick }) => {
   const [openSection, setOpenSection] = useState(null);
 
   const handleSectionClick = (label) => {
-    if (label === "Finance") {
-      // Toggle Finance section open/close
+    // Expand or collapse the "Finance" and "Mentors" sections
+    if (label === "Finance" || label === "Mentors") {
       setOpenSection(openSection === label ? null : label);
     } else {
-      // Close Finance section if it's open
       setOpenSection(null);
     }
   };
@@ -22,19 +21,18 @@ const Sidebar = ({ links, activeLink, onLinkClick }) => {
       </div>
       {links.map(({ to, label, icon, children }) => {
         const isOpen = openSection === label;
-        const isFinanceSection = label === "Finance";
-
-        // Determine if any of the child links are active
+        const isDropdownSection = label === "Finance" || label === "Mentors"; // Both Finance and Mentors
         const isChildActive =
-          children && children.some((child) => child.to === activeLink);
+          children &&
+          children.some((child) => `/dashboard/${child.to}` === activeLink);
 
         return (
           <div key={label} className="sidebar-item">
             <div
               className={`sidebar-link ${
-                isFinanceSection && isChildActive
+                isDropdownSection && isChildActive
                   ? ""
-                  : activeLink === to
+                  : activeLink.includes(to)
                   ? "active"
                   : ""
               }`}
@@ -42,10 +40,8 @@ const Sidebar = ({ links, activeLink, onLinkClick }) => {
                 if (children) {
                   handleSectionClick(label);
                 } else {
-                  // Handle click for other sections
                   onLinkClick(to);
-                  // Close Finance section if it's open
-                  if (openSection === "Finance") {
+                  if (openSection === "Finance" || openSection === "Mentors") {
                     setOpenSection(null);
                   }
                 }
@@ -57,9 +53,10 @@ const Sidebar = ({ links, activeLink, onLinkClick }) => {
                 <span
                   className={`arrow ${isOpen ? "up" : "down"}`}
                   style={{
-                    marginLeft: "auto", // Aligns the arrow to the right
+                    marginLeft: "auto",
                     transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                    transition: "transform 0.3s ease", // Smooth rotation
+                    transition: "transform 0.3s ease",
+                    fontSize: "12px",
                   }}
                 >
                   ▼
@@ -73,18 +70,12 @@ const Sidebar = ({ links, activeLink, onLinkClick }) => {
                     key={childTo}
                     onClick={() => {
                       onLinkClick(childTo);
-                      // Keep Finance section open if clicking on its submenu
-                      if (label === "Finance") {
+                      if (label === "Finance" || label === "Mentors") {
                         setOpenSection(label);
-                      } else {
-                        // Close Finance section if it's open
-                        if (openSection === "Finance") {
-                          setOpenSection(null);
-                        }
                       }
                     }}
                     className={`sidebar-link ${
-                      activeLink === childTo ? "active" : ""
+                      activeLink.includes(childTo) ? "active" : ""
                     }`}
                   >
                     <span className="ms-4">{childLabel}</span>
