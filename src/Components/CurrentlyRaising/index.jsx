@@ -43,14 +43,37 @@ const CurrentlyRaising = ({
   });
 
   const [tableData, setTableData] = useState({
-    type: currently_raising_type,
-    size: currently_raising_size,
+    type: currently_raising_type ,
+    size: currently_raising_size ,
     sources: investment_sources,
   });
+useEffect(() => {
+  // Check if props are provided and update state accordingly
+  if (currently_raising_type && currently_raising_size && investment_sources) {
+    setTableData({
+      type: currently_raising_type,
+      size: currently_raising_size,
+      sources: investment_sources.map((source) => source.investment_source), // Make sure you're correctly mapping sources
+    });
 
+    const updatedSources = { ...investmentSources };
+    investment_sources.forEach((source) => {
+      updatedSources[source.investment_source] = true;
+    });
+    setInvestmentSources(updatedSources);
+  }
+}, [currently_raising_type, currently_raising_size, investment_sources]);
   const handleOpen = () => {
-    setType(currently_raising_type || "");
-    setRaisingSize(currently_raising_size || "");
+    console.log("currently_raising_type", currently_raising_type);
+    console.log("currently_raising_size", currently_raising_size);
+     if (tableData && tableData.type) {
+       setType(tableData.type || "");
+       setRaisingSize(tableData.size || "");
+     } else {
+       setType(currently_raising_type || "");
+       setRaisingSize(currently_raising_size || "");
+     }
+
 
     // Map selected investment sources
     const updatedSources = { ...investmentSources };
@@ -97,31 +120,42 @@ const CurrentlyRaising = ({
     }
   }, [tableData]);
 
-const handleDelete = async () => {
-  try {
-    // Delete investment sources
-    await axios.delete(
-      `http://localhost:8000/api/investment-sources/${startupId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+ const handleDelete = async () => {
+   try {
+     // Delete investment sources
+     await axios.delete(
+       `http://localhost:8000/api/investment-sources/${startupId}`,
+       {
+         headers: { Authorization: `Bearer ${token}` },
+       }
+     );
 
-    // Delete raising info
-    await axios.delete(
-      `http://localhost:8000/api/startup/investinfo/${startupId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+     // Delete raising info
+     await axios.delete(
+       `http://localhost:8000/api/startup/investinfo/${startupId}`,
+       {
+         headers: { Authorization: `Bearer ${token}` },
+       }
+     );
 
-    // Clear the data after successful deletion
-    setTableData(null); // Reset the tableData to null
-  } catch (error) {
-    console.error("Error occurred while deleting:", error);
-  }
-};
+     // Clear the data after successful deletion
+     setTableData(null); // Reset the tableData to null
+     setType(""); // Clear type input
+     setRaisingSize(""); // Clear size input
+     setInvestmentSources({
+       "Business Angel": false,
+       "Public grant": false,
+       Accelerator: false,
+       Corporate: false,
+       "VC Fund": false,
+       Crowd: false,
+     }); // Clear all sources
 
+     setDisplayCurrentlyRaising(false); // Reset to display 'Set Current Round' view
+   } catch (error) {
+     console.error("Error occurred while deleting:", error);
+   }
+ };
 
   const handleSave = async () => {
     if (!validateForm()) return;
