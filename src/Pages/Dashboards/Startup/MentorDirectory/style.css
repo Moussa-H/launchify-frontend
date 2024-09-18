@@ -1,0 +1,54 @@
+.search-cards {
+  width: 300px !important;
+}
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-1wgn40h-MuiInputBase-root-MuiOutlinedInput-root {
+  padding: 10px !important;
+  width: 100% !important;
+}
+
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-1wgn40h-MuiInputBase-root-MuiOutlinedInput-root
+  > input {
+  width: 100% !important;
+}
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-20bmp1-MuiSvgIcon-root {
+  color: #919191;
+}
+.search-cards {
+  width: 300px !important;
+  margin-bottom: 100px !important;
+}
+.css-1jddavp-MuiPaper-root-MuiCard-root {
+  overflow: visible !important;
+}
+.css-1jddavp-MuiPaper-root-MuiCard-root {
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 26%),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgb(0 0 0 / 37%)!important;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root.css-1jddavp-MuiPaper-root-MuiCard-root {
+    margin-bottom: 80px;
+}
+.css-1wl0g7i-MuiCardMedia-root {
+    border: 1px solid #b8b8b8 !important;
+}
+img.MuiCardMedia-root.MuiCardMedia-media.MuiCardMedia-img.css-1wew1wk-MuiCardMedia-root {
+    border: 1px solid #ababab!important;
+}
+svg.lucide.lucide-corner-up-right {
+    color: #212735;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root.css-1jddavp-MuiPaper-root-MuiCard-root {
+    padding-bottom: 0px!important;
+}
+
+.css-46bh2p-MuiCardContent-root:last-child {
+    padding-bottom: 4px!important;
+}
+
+.message-icon {
+    fill: #212735 !important;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    margin-right: -10px;
+    
+}
