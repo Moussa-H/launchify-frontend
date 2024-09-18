@@ -10,7 +10,14 @@
   width: 100px;
   height: 100px;
 }
-
+i.fas.fa-chevron-right {
+    right: -70%;
+    display: block;
+    position: absolute;
+    font-size: 18px;
+    /* opacity: 1!important; */
+    color: #282828;
+}
 .testimonial-text {
     color: #333;
     font-weight: 400;
