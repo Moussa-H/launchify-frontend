@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import { LogOut } from "lucide-react";
 
 const DashboardNavbar = ({ username }) => {
   const navigate = useNavigate();
@@ -14,13 +15,14 @@ const DashboardNavbar = ({ username }) => {
   return (
     <Navbar bg="light" expand="lg" className="mb-3">
       <Container fluid>
-        <Nav className="ms-auto">
+        <Nav className="ms-auto flex">
           <Navbar.Text className="me-3 name">
             <div className="username-circle">{username.charAt(0)}</div>
             {username}
           </Navbar.Text>
+
           <Dropdown align="end">
-            <i className="bi bi-box-arrow-right" onClick={handleLogout}></i>
+            <LogOut onClick={handleLogout} />
           </Dropdown>
         </Nav>
       </Container>
