@@ -27,3 +27,8 @@ font-size: 17px !important;
   padding: 5px 20px!important;
   background-color: transparent;
 }
+
+span.MuiButton-icon.MuiButton-startIcon.MuiButton-iconSizeMedium.css-1sh91j5-MuiButton-startIcon svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-20bmp1-MuiSvgIcon-root {
+    color: #fff;
+    width: 17px;
+}
