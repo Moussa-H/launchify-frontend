@@ -1,77 +1,49 @@
-import React, { useState, useRef } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
+import { Box } from "@mui/material";
 
-const ImageUpload = ({ image, setImage, setFormData }) => {
-  const [dragging, setDragging] = useState(false);
-  const fileInputRef = useRef(null);
-
-const handleImageChange = (e) => {
-  const selectedFile = e.target.files[0];
-  if (selectedFile) {
-    const imageUrl = URL.createObjectURL(selectedFile); // Create URL for the preview
-    setImage(imageUrl); // Set the image state with the preview URL
-    setFormData((prevData) => ({
-      ...prevData,
-      image: selectedFile, // Update formData with the actual file
-    }));
-  }
-};
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    setDragging(true);
+const ImageUpload = ({ image, setImage }) => {
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
   };
-
-  const handleDragLeave = () => {
-    setDragging(false);
-  };
-
-const handleDrop = (event) => {
-  event.preventDefault();
-  setDragging(false);
-  const file = event.dataTransfer.files[0];
-  if (file) {
-    const imageUrl = URL.createObjectURL(file); // Create URL for the preview
-    setImage(imageUrl); // Set the image state with the preview URL
-    setFormData((prevData) => ({ ...prevData, image: file })); // Store the actual file in formData
-  }
-};
-
-
 
   return (
-    <div
-      className={`upload-box ${dragging ? "dragging" : ""}`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      onClick={() => fileInputRef.current.click()}
+    <Box
+      sx={{
+        width: "170px",
+        height: "170px",
+        border: "2px solid #ccc",
+        borderRadius: "8px",
+        overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        cursor: "pointer",
+        backgroundColor: "#f5f5f5",
+        position: "relative",
+      }}
+      onClick={() => document.getElementById("imageUpload").click()}
     >
       {image ? (
         <img
-          src={image}
-          alt="Preview"
-          className="img-fluid preview-image"
-          key={image} // Add key to force re-render
+          src={URL.createObjectURL(image)}
+          alt="Profile"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
         />
       ) : (
-        <div className="text-center">
-          {dragging ? (
-            <p>Drop the image here...</p>
-          ) : (
-            <p>Drag & Drop or Click to Upload</p>
-          )}
-        </div>
+        <span>Select Image</span>
       )}
-
-      {/* Hidden file input for image upload */}
       <input
+        accept="image/*"
         type="file"
-        ref={fileInputRef}
-        style={{ display: "none" }}
+        id="imageUpload"
         onChange={handleImageChange}
+        style={{ display: "none" }}
       />
-    </div>
+    </Box>
   );
 };
 
