@@ -1,0 +1,127 @@
+.payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.card {
+  width: 500px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.container-fluid-payment {
+  padding: 0px 30px;
+}
+
+.info-field {
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 15px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-top: 10px;
+  font-family: "Poppins";
+}
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: #e0e0e0;
+  margin: 20px 0;
+}
+
+.card-element-container {
+  margin-bottom: 20px;
+}
+
+.card-element {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.form-group-half {
+  flex: 0 0 48%;
+}
+
+.form-input-half {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1976d2;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-top: 10px;
+}
+hr.divider {
+  background: #0a0a0a;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.info-field > strong {
+  font-weight: 500;
+  color: #707070;
+}
+.info-field > strong {
+  font-weight: 500;
+  color: #707070;
+  margin-right: 15px;
+}
