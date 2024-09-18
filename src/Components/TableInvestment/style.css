@@ -1,0 +1,23 @@
+.css-lc42l8-MuiInputBase-input-MuiOutlinedInput-input {
+  font-size: 13px !important;
+  padding: 2px !important;
+  padding-left: 10px !important;
+  width: 100px !important;
+}
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-lxfshk-MuiInputBase-root-MuiOutlinedInput-root
+  > input {
+  font-size: 13px !important;
+  width: 100% !important;
+}
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-lxfshk-MuiInputBase-root-MuiOutlinedInput-root {
+  width: 150px !important;
+}
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.MuiInputBase-adornedEnd.css-lxfshk-MuiInputBase-root-MuiOutlinedInput-root {
+    padding: 0px 10px!important;
+    height: 40px!important;
+    width: 180px!important;
+}
+.title-table {
+    font-size: 15px;
+    font-weight: 700;
+}
