@@ -1,0 +1,9 @@
+tr.MuiTableRow-root.MuiTableRow-head.css-1q1u3t4-MuiTableRow-root th {
+    color: #fff!important;
+}
+.flex-btn {
+    display: flex;
+}
+button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-colorSecondary.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-colorSecondary.css-7ib2jg-MuiButtonBase-root-MuiButton-root {
+    background: red;
+}
