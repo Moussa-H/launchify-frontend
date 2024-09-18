@@ -21,8 +21,12 @@
 .col-lg-6.text-left p {
     margin-bottom: 30px;
 }
-
-
+.card.startups-card.p-5 {
+    width: 100%;
+}
+.card.investors-card.p-5 {
+    width: 100%;
+}
 .home-title {
     font-size: 38px;
     line-height: 1.2;
@@ -126,4 +130,10 @@
 .col-md-6.my-5 {
     margin-top: 10px!important;
 }
+}
+.fa, .fa-brands, .fa-classic, .fa-regular, .fa-sharp-solid, .fa-solid, .fab, .far, .fas {
+    font-family: 'FontAwesome' !important;
+}
+ul.navbar-nav.mx-auto li.nav-item.px-4 a.nav-link {
+    color: #000 !important;
 }
