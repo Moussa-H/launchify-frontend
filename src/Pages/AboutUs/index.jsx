@@ -14,9 +14,9 @@ export default function AboutUs() {
   return (
     <div>
       <Layout>
-        <BannerSection title={title} image={heroImage} />
+        <BannerSection title={title} image={heroImage}/>
         <ImageandText
-          title="Our Mission:"
+          title="Our Mission"
           description="Our mission is to empower startups by providing them with the tools and insights they need to bring innovative app ideas to life, ensuring success in a competitive market."
           image={mission}
         />
