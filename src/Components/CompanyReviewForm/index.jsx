@@ -41,6 +41,7 @@ const CompanyReviewForm = ({
             name="founding_year"
             value={formData.founding_year || ""}
             onChange={handleInputChange}
+            type="number"
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
