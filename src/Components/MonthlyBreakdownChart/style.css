@@ -1,0 +1,16 @@
+.title-graph {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+
+.flex-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+div#year-select {
+    padding: 5px;
+    font-size: 13px;
+    padding-left: 10px;
+}
