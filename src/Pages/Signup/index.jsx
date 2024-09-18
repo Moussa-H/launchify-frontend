@@ -38,7 +38,7 @@ const SignUp = () => {
       console.log("Registration successful:", response.data);
     } catch (error) {
       if (error.response && error.response.data.errors) {
-        setValidationError("Validation Error");
+        setValidationError("Credentials already in use. Please try again");
       } else {
         setValidationError(
           "An unexpected error occurred. Please try again later."
