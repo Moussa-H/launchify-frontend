@@ -19,10 +19,21 @@ span.me-3.name.navbar-text {
     display: flex!important;
     align-items: center;
 }
+.ms-auto.flex.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+.ms-auto.flex.navbar-nav svg{
+    width:20px;
+    margin-right:20px;
+}
 nav.mb-3.navbar.navbar-expand-lg.navbar-light.bg-light {
     box-shadow: 0px 6.25px 12.51px -5.47px rgba(3, 29, 53, 0.08);
     background: transparent!important;
 }
 .navbar-light .navbar-text {
     color: #212735;
+}
+i.bi.bi-box-arrow-right {
+    cursor: pointer;
 }
