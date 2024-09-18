@@ -1,0 +1,14 @@
+.graph-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-graph {
+  margin-left: 20px;
+}
+
+.css-1tfmlru-MuiResponsiveChart-container {
+  width: max-content !important;
+  height: 300px;
+}
