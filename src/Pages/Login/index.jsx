@@ -38,11 +38,11 @@ const Login = () => {
         localStorage.setItem("username", user.username);
         console.log("role", user.role);
         if (user.role === "Startup") {
-          navigate("/startup-dashboard");
+          navigate("/startup-dashboard/profile");
         } else if (user.role === "Mentor") {
-          navigate("/mentor-dashboard");
+          navigate("/mentor-dashboard/profile");
         } else if (user.role === "Investor") {
-          navigate("/investor-dashboard");
+          navigate("/investor-dashboard/profile");
         }
 
         console.log("Login successful:", response.data);
