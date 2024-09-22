@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Snackbar, Alert } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -27,48 +27,47 @@ const Expenses = () => {
     miscellaneous: "",
   });
   const [isUpdating, setIsUpdating] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     fetchExpenses();
   }, [date]);
 
   // Fetch expenses based on selected date
- const fetchExpenses = async () => {
-   try {
-     const year = date.year();
-     const month = date.month() + 1;
-     console.log("year", year);
-     console.log("month", month);
+  const fetchExpenses = async () => {
+    try {
+      const year = date.year();
+      const month = date.month() + 1;
 
-     // Fetch the expenses for the selected year and month
-     const response = await axios.get(API_URL, {
-       headers,
-       params: { year, month },
-     });
+      // Fetch the expenses for the selected year and month
+      const response = await axios.get(API_URL, {
+        headers,
+        params: { year, month },
+      });
 
-     const expensesData = response.data.data; // Ensure you're accessing `data.data`
+      const expensesData = response.data.data;
 
-     if (expensesData && expensesData.length > 0) {
-       const expense = expensesData[0]; // Assuming only one record for the given month/year
-       setFormValues({
-         office_rent: expense.office_rent || "",
-         maintenance: expense.maintenance || "",
-         marketing: expense.marketing || "",
-         software_licenses: expense.software_licenses || "",
-         legal_accounting: expense.legal_accounting || "",
-         office_supplies: expense.office_supplies || "",
-         miscellaneous: expense.miscellaneous || "",
-       });
-       setIsUpdating(true);
-     } else {
-       resetForm();
-       setIsUpdating(false);
-     }
-   } catch (error) {
-     console.error("Error fetching expenses:", error);
-   }
- };
-
+      if (expensesData && expensesData.length > 0) {
+        const expense = expensesData[0]; // Assuming only one record for the given month/year
+        setFormValues({
+          office_rent: expense.office_rent || "",
+          maintenance: expense.maintenance || "",
+          marketing: expense.marketing || "",
+          software_licenses: expense.software_licenses || "",
+          legal_accounting: expense.legal_accounting || "",
+          office_supplies: expense.office_supplies || "",
+          miscellaneous: expense.miscellaneous || "",
+        });
+        setIsUpdating(true);
+      } else {
+        resetForm();
+        setIsUpdating(false);
+      }
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
+  };
 
   // Reset form fields
   const resetForm = () => {
@@ -103,23 +102,50 @@ const Expenses = () => {
     try {
       if (isUpdating) {
         await axios.put(API_URL, payload, { headers }); // Update expenses
-        console.log("Expenses updated successfully!");
+        setSuccessMessage("Expenses updated successfully!");
       } else {
         await axios.post(API_URL, payload, { headers }); // Save new expenses
-        console.log("Expenses saved successfully!");
+        setSuccessMessage("Expenses saved successfully!");
       }
+
+      // Open success message
+      setOpenSnackbar(true);
     } catch (error) {
       console.error("Error saving expenses:", error);
     }
   };
 
+  // Handle closing of Snackbar
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
   return (
     <div className="container border p-5 mt">
+      {/* Snackbar for success message */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
+
       <div className="col-md-10 mb-4 mx-auto p-0">
         <div className="date-flex">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label={"Month/Year"}
+             
               views={["month", "year"]}
               value={date}
               onChange={(newValue) => setDate(newValue)}

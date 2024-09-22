@@ -81,12 +81,15 @@ const MentorDirectory = () => {
         return {};
     }
   };
-
+   const senderType = "startup";
+   const startupId = "9";
   const handleIconClick = (status, mentorId) => {
     if (status === "accepted") {
-      navigate(`chats/${mentorId}`); // Navigate to the chat page with mentorId
-    } else {
-      // Open the popup if the status is not accepted (for sending a request)
+    const senderType = "startup";
+    const startupId = "9";
+      navigate(`chats/${mentorId}/${startupId}/${senderType}`); // Navigate to the chat page with mentorId
+    } else if (status === "none") {
+      // Open the popup if the status is "none" (for sending a request)
       setSelectedMentorId(mentorId);
       setIsPopupOpen(true);
     }
@@ -130,14 +133,13 @@ const MentorDirectory = () => {
                 padding: "20px 0",
               }}
             >
-              {/* Conditional rendering of CornerUpRight based on status */}
               {mentor.status === "none" && (
                 <Box
                   sx={{
                     position: "absolute",
                     top: 8,
                     right: 8,
-                    color: "gray", // Adjust color if needed
+                    color: "gray",
                   }}
                 >
                   <IconButton
@@ -194,14 +196,12 @@ const MentorDirectory = () => {
                   <Typography variant="body2">{mentor.location}</Typography>
                 </Box>
 
-                {/* Status and Icon Row */}
                 <Box
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
                   mt={2}
                 >
-                  {/* Status */}
                   {mentor.status !== "none" && (
                     <Typography
                       variant="body2"
@@ -214,17 +214,15 @@ const MentorDirectory = () => {
                         : "Rejected"}
                     </Typography>
                   )}
-                  {/* Icons */}
-                  {mentor.status === "accepted" && (
-                    <IconButton onClick={() => navigate(`chats/${mentor.id}`)}>
+                  {mentor.status === "accepted" ? (
+                    <IconButton onClick={() => navigate(`chats/${mentor.id}/${startupId}/${senderType}`)}>
                       <MessageCircleMore />
                     </IconButton>
-                  )}
-                  {mentor.status !== "accepted" && (
+                  ) : (
                     <IconButton
                       onClick={() => handleIconClick(mentor.status, mentor.id)}
                     >
-                      <CornerUpRight />
+                      <MessageCircleMore />
                     </IconButton>
                   )}
                 </Box>
@@ -233,7 +231,6 @@ const MentorDirectory = () => {
           </Grid>
         ))}
       </Grid>
-
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination
           count={Math.ceil(filteredMentors.length / mentorsPerPage)}
@@ -245,8 +242,9 @@ const MentorDirectory = () => {
       {isPopupOpen && selectedMentorId && (
         <PopupSendRequest
           mentorId={selectedMentorId}
+          open={isPopupOpen}
           onClose={handlePopupClose}
-          onSuccess={() => handleRequestSuccess(selectedMentorId)}
+          onRequestSuccess={handleRequestSuccess}
         />
       )}
     </Box>

@@ -97,13 +97,17 @@ const Profile = ({ token }) => {
     const formData = new FormData();
 
     // Append each form value to FormData
+    // Append each field to FormData
     for (const [key, value] of Object.entries(formValues)) {
       formData.append(key, value);
     }
 
     try {
+      console.log("formData", formData);
+        console.log("token", token);
+         console.log("formValues", formValues);
       if (mentorId) {
-        await axios.post(`${API_URL}/${mentorId}`, formData, {
+        await axios.post(`${API_URL}/${mentorId}`, formValues, {
           headers: {
             ...headers,
             "Content-Type": "multipart/form-data",

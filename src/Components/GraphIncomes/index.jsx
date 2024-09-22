@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Box } from "@mui/material";
 import axios from "axios";
+import {
+  Container,
+  Typography,
+  TextField,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { PieChart } from "@mui/x-charts/PieChart";
+import { PieChart, Pie, Tooltip, Cell, Legend } from "recharts";
+
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
 const GraphIncomes = ({ token }) => {
   const [incomeData, setIncomeData] = useState(null);
   const [date, setDate] = useState(dayjs());
+  const [loading, setLoading] = useState(false);
 
   // Function to fetch income data from the API
   const fetchIncomeData = async (year, month) => {
+    setLoading(true);
     try {
       const response = await axios.get("http://localhost:8000/api/incomes", {
         headers: {
@@ -25,6 +35,8 @@ const GraphIncomes = ({ token }) => {
       setIncomeData(response.data.data[0]);
     } catch (error) {
       console.error("Error fetching income data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,60 +50,61 @@ const GraphIncomes = ({ token }) => {
   // Pie chart data setup
   const pieChartData = incomeData
     ? [
-        {
-          data: [
-            { id: 0, value: incomeData.product_sales, label: "Product Sales" },
-            {
-              id: 1,
-              value: incomeData.service_revenue,
-              label: "Service Revenue",
-            },
-            {
-              id: 2,
-              value: incomeData.subscription_fees,
-              label: "Subscription Fees",
-            },
-            {
-              id: 3,
-              value: incomeData.investment_income,
-              label: "Investment Income",
-            },
-          ],
-          highlightScope: { fade: "global", highlight: "item" },
-          faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-        },
+        { name: "Product Sales", value: incomeData.product_sales },
+        { name: "Service Revenue", value: incomeData.service_revenue },
+        { name: "Subscription Fees", value: incomeData.subscription_fees },
+        { name: "Investment Income", value: incomeData.investment_income },
       ]
     : [];
 
   return (
-    <Container>
-      <div className="flex-title">
-        <Typography variant="h4" gutterBottom className="title-graph">
-          Monthly Income Breakdown
-        </Typography>
+    <Container maxWidth="md">
+      <Box mb={4}>
+        <div className="flex-title mt-0">
+          <Typography variant="h4" gutterBottom className="title-graph">
+            Monthly Income Breakdown
+          </Typography>
 
-        {/* Date Picker for Month/Year */}
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            views={["year", "month"]}
-            value={date}
-            onChange={(newValue) => setDate(newValue)}
-          />
-        </LocalizationProvider>
-      </div>
+          {/* Date Picker for Month/Year */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              views={["year", "month"]}
+              value={date}
+              onChange={(newValue) => setDate(newValue)}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+            />
+          </LocalizationProvider>
+        </div>
+      </Box>
 
-      {/* Flexbox container for pie chart and legend */}
-      <Box >
-        {/* Pie chart container */}
-        <Box >
-          {incomeData ? (
-            <PieChart series={pieChartData} width={300} height={300} />
-          ) : (
-            <Typography variant="body1" className="mt-3">
-              No income data available for the selected month.
-            </Typography>
-          )}
-        </Box>
+      {/* Chart container */}
+      <Box display="flex" justifyContent="center" alignItems="center">
+        {loading ? (
+          <CircularProgress />
+        ) : incomeData ? (
+          <PieChart width={400} height={300}>
+            <Pie
+              data={pieChartData}
+              dataKey="value"
+              outerRadius={100}
+              fill="#8884d8"
+              label
+            >
+              {pieChartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        ) : (
+          <Typography variant="body1">
+            No income data available for the selected month.
+          </Typography>
+        )}
       </Box>
     </Container>
   );

@@ -46,7 +46,7 @@ const ExpensesTable = ({ token }) => {
 
   return (
     <Container>
-      <div className="flex-title">
+      <div className="flex-title mt-0">
         <Typography variant="h4" gutterBottom className="title-graph">
           Monthly Expenses Table
         </Typography>

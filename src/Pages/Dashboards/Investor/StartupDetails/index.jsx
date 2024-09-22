@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Paper, Grid, Typography } from "@mui/material";
-import "./style.css"
+import "./style.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,9 +13,9 @@ const headers = {
 };
 
 const StartupDetails = () => {
-     const navigate = useNavigate();
-       const { startupId } = useParams();
-       console.log(startupId); 
+  const navigate = useNavigate();
+  const { startupId } = useParams();
+  console.log(startupId);
   const [startup, setStartup] = useState(null);
 
   useEffect(() => {
@@ -28,6 +28,7 @@ const StartupDetails = () => {
       if (response.data.status === "success") {
         setStartup(response.data.startup);
       }
+      console.log("response.data.startup", response.data.startup);
     } catch (error) {
       console.error("Error fetching startup details:", error);
     }
@@ -99,15 +100,11 @@ const StartupDetails = () => {
               <Typography>{startup.company_stage}</Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="subtitle1">Investment Size</Typography>
-              <Typography>{startup.currently_raising_size}</Typography>
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} style={{ marginTop: "16px" }}>
-            <Grid item xs={3}>
               <Typography variant="subtitle1">Employees Count</Typography>
               <Typography>{startup.employees_count}</Typography>
             </Grid>
+          </Grid>
+          <Grid container spacing={2} style={{ marginTop: "16px" }}>
             <Grid item xs={3}>
               <Typography variant="subtitle1">Phone Number</Typography>
               <Typography>{startup.phone_number}</Typography>

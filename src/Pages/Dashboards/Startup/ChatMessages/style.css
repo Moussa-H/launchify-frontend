@@ -1,0 +1,62 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-bubble {
+  padding: 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.sent {
+  align-self: flex-end;
+  background-color: #DCF8C6;
+}
+
+.received {
+  align-self: flex-start;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.message-content {
+  position: relative;
+  font-size: 14px;
+}
+.MuiAvatar-root.MuiAvatar-circular.MuiAvatar-colorDefault.css-qruev5-MuiAvatar-root {
+    width: 30px;
+    height: 30px;
+}
+.css-1wasbw4 {
+    height: 40px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 8px;
+    background-color: #ffffff;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}

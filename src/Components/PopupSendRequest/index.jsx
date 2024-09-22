@@ -17,12 +17,14 @@ const PopupSendRequest = ({
   mentorId,
   open,
   onClose,
-  onRequestSuccess,
+  onRequestSuccess
 }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSendRequest = async () => {
+    const token=localStorage.getItem("token");
     setLoading(true);
+    console.log()
     try {
       const response = await axios.post(
         "http://localhost:8000/api/request",
@@ -34,6 +36,7 @@ const PopupSendRequest = ({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+   console.log("response.data", response.data);
       if (response.data.status === "success") {
         onRequestSuccess(mentorId); // Trigger status update on the mentor card
         onClose(); // Close the popup after the request is successful

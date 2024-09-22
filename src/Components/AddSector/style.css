@@ -4,10 +4,10 @@
   color: #908b8b;
   background: transparent;
   border-radius: 40px;
-  padding: 4px 25px!important;
+  padding: 4px 25px !important;
   display: inline-block;
   margin-right: 8px;
-font-size: 17px !important;
+  font-size: 17px !important;
 }
 
 .btn-plus {
@@ -22,13 +22,18 @@ font-size: 17px !important;
   font-size: 13px;
   color: #000 !important;
   font-weight: 700;
-  border: 1px solid #a9a9a9!important;
-  border-radius: 40px!important;
-  padding: 5px 20px!important;
+  border: 1px solid #a9a9a9 !important;
+  border-radius: 40px !important;
+  padding: 5px 20px !important;
   background-color: transparent;
 }
 
-span.MuiButton-icon.MuiButton-startIcon.MuiButton-iconSizeMedium.css-1sh91j5-MuiButton-startIcon svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-20bmp1-MuiSvgIcon-root {
-    color: #fff;
-    width: 17px;
+span.MuiButton-icon.MuiButton-startIcon.MuiButton-iconSizeMedium.css-1sh91j5-MuiButton-startIcon
+  svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-20bmp1-MuiSvgIcon-root {
+  color: #fff;
+  width: 17px;
+}
+.MuiInputBase-root.MuiFilledInput-root.MuiFilledInput-underline.MuiFilledInput-adornedEnd.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiAutocomplete-inputRoot.css-1ncn3sx-MuiInputBase-root-MuiFilledInput-root {
+  height: 50px !important;
+  background: #f7f7f7 !important;
 }

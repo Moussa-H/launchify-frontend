@@ -78,6 +78,7 @@ const InvestmentForm = () => {
     }
 
     try {
+      console.log(startupId, amount, paymentMethod.id);
      const response = await axios.post(
        "http://localhost:8000/api/investments",
        {

@@ -22,3 +22,17 @@ p.MuiTypography-root.MuiTypography-body1.css-1edfpdg-MuiTypography-root {
   color: #6c6c6c;
   font-size: 15px;
 }
+
+p.MuiTypography-root.MuiTypography-body1.css-1edfpdg-MuiTypography-root {
+  color: #6c6c6c;
+  font-size: 25px;
+  font-size: 15px !important;
+  font-weight: 400;
+}
+h6.MuiTypography-root.MuiTypography-subtitle1.css-1ixrkmk-MuiTypography-root {
+  font-weight: 600 !important;
+  margin-bottom: 7px;
+}
+.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-2.css-mhc70k-MuiGrid-root {
+  margin-top: 40px !important;
+}

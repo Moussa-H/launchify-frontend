@@ -12,7 +12,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 // Load your Stripe publishable key
-const stripePromise = loadStripe("pk_test_51Pyj3MFplAWf40dFM0pwmsAkyZqk4mCqHw6Z5Jqp6M2cLBpT3o8aVFqQ4dGE7xaSzIsSl9dOJwcDKfO7sNGYjkwm003EeJvZIE");
+const stripePromise = loadStripe(
+  "pk_test_51Pyj3MFplAWf40dFg9WmvWgNbtyEBJ4DMqqKNIKM9bRswHgFQWLn7VqmVfd4LcJddFf2BfSHmjRQJY6bWYF4y7UQ00iAw5WP3j"
+);
 
 const InvestorDashboard = () => {
   const token = localStorage.getItem("token");

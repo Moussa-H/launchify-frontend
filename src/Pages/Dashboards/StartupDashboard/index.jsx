@@ -13,7 +13,7 @@ import ChatMessages from "../Startup/ChatMessages";
 import StrategiesTable from "../../../Components/StrategiesTable";
 
 const StartupDashboard = () => {
-  const token=localStorage.getItem("token")
+  const token = localStorage.getItem("token");
   const navigate = useNavigate(); // Hook for navigating programmatically
 
   const links = [
@@ -27,14 +27,7 @@ const StartupDashboard = () => {
         { to: "finance-dashboard", label: "Dashboard" },
       ],
     },
-    {
-      label: "Mentors", // Mentor section with children
-      icon: <Users />,
-      children: [
-        { to: "mentor-directory", label: "Mentor Directory" },
-        { to: "mentor-match", label: "Mentor Match" },
-      ],
-    },
+    { to: "mentor-directory", label: "Mentors", icon: <Users /> },
   ];
 
   const handleLinkClick = (to) => {
@@ -62,10 +55,9 @@ const StartupDashboard = () => {
         <Route path="finance-dashboard" element={<FinanceDashboard />} />
         <Route path="mentor-directory" element={<MentorDirectory />} />{" "}
         {/* Mentor Directory Route */}
-        <Route path="mentor-match" element={<MentorMatch />} />{" "}
         {/* Mentor Match Route */}
         <Route
-          path="mentor-directory/chats/:mentorId"
+          path="mentor-directory/chats/:mentorId/:startupId/:senderType"
           element={<ChatMessages />}
         />
       </Routes>

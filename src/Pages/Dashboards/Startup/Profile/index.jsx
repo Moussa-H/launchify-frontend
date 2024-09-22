@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, Snackbar } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 
@@ -36,10 +36,52 @@ const Profile = () => {
     currently_raising_type: "",
     currently_raising_size: "",
   });
-
-  const [errors, setErrors] = useState({}); // To store validation errors
-
+  
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
   const token = localStorage.getItem("token");
+
+
+
+
+const saveSectors = (selectedSectors) => {
+  const sectorData = selectedSectors.map((id) => {
+    const sector = sectors.find((sector) => sector.id === id);
+    return { id: sector.id, name: sector.name };
+  });
+
+  if (formData.id) {
+    axios
+      .post(
+        `http://localhost:8000/api/sectors/${formData.id}`,
+        { sectors: sectorData }, // Request body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        // Handle success, maybe update the sectors state
+        console.log("Sectors updated successfully", response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error updating the sectors!", error);
+      });
+  } else {
+    console.log("No startupId provided. Skipping API call.");
+  }
+};
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,11 +92,10 @@ const Profile = () => {
 
         if (response.data.startups.length > 0) {
           const startup = response.data.startups[0];
-
           setFormData((prevValues) => ({
             ...prevValues,
             ...startup,
-            image: startup.image || null, // Setting image if exists
+            image: startup.image || null,
           }));
           setSectors(startup.sectors || []);
           setInvestmentSources(startup.investment_sources || []);
@@ -65,22 +106,6 @@ const Profile = () => {
     };
     fetchData();
   }, [token]);
-
-  const validateFormData = () => {
-    let formErrors = {};
-    let isValid = true;
-
-    // Check required fields
-    for (const [key, value] of Object.entries(formData)) {
-      if (key !== "image" && !value) {
-        formErrors[key] = `${key.replace(/_/g, " ")} is required.`;
-        isValid = false;
-      }
-    }
-
-    setErrors(formErrors);
-    return isValid;
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -95,35 +120,39 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    if (!validateFormData()) {
-      return; // Stop if validation fails
-    }
-
     const apiUrl = "http://localhost:8000/api/startup";
-    const data = new FormData();
+
+    // Log the formData to check its values
+    console.log("formData before sending:", formData);
 
     // Append each field to FormData
-    for (const [key, value] of Object.entries(formData)) {
-      data.append(key, value);
-    }
 
-    const startupId = formData.id;
+    const data = {
+      ...formData,
+      // If you need to send the image URL instead of the file
+      image: formData.image ? formData.image : null,
+    };
+    console.log("data",data);
+    const id = formData.id;
+    console.log(id,"id")
     try {
       const headers = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       };
-      if (!startupId) {
+
+      if (!id) {
+
         // Create new startup
         const response = await axios.post(apiUrl, data, { headers });
         console.log("Startup created:", response.data);
       } else {
+        console.log("data updated before put", data)
         // Update existing startup
-        const response = await axios.put(`${apiUrl}/${startupId}`, data, {
-          headers,
-        });
+        const response = await axios.put(`${apiUrl}/${id}`, data, { headers });
         console.log("Startup updated:", response.data);
       }
+      setSuccessMessage("Successfully saved changes!");
     } catch (error) {
       console.error(
         "Error saving startup data:",
@@ -131,12 +160,15 @@ const Profile = () => {
       );
     }
   };
-
   const handleImageChange = (event) => {
     setFormData((prevValues) => ({
       ...prevValues,
       image: event.target.files[0],
     }));
+  };
+
+  const handleClose = () => {
+    setSuccessMessage("");
   };
 
   return (
@@ -240,6 +272,12 @@ const Profile = () => {
       {activeSection === "team" && (
         <AddMember token={token} startupId={formData.id} />
       )}
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message={successMessage}
+      />
     </div>
   );
 };

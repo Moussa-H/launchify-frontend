@@ -59,34 +59,39 @@ const AddSector = ({ sectors, startupId = null }) => {
     });
   };
 
-  const handleSave = () => {
-    const sectorData = selectedSectors.map((id) => {
-      const sector = allSectors.find((sector) => sector.id === id);
-      return { id: sector.id, name: sector.name }; // Include both id and name
-    });
-    axios
-      .post(
-        `http://localhost:8000/api/sectors/${startupId}`,
-        { sectors: sectorData }, // Request body
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        setOpen(false); // Close the dialog after successful API call
+ const handleSave = () => {
+   const sectorData = selectedSectors.map((id) => {
+     const sector = allSectors.find((sector) => sector.id === id);
+     return { id: sector.id, name: sector.name }; // Include both id and name
+   });
 
-        const updatedSectors = sectorData.filter((sector) =>
-          selectedSectors.includes(sector.id)
-        );
-        setDisplaySectors(updatedSectors);
-      })
-      .catch((error) => {
-        console.error("There was an error updating the sectors!", error);
-      });
-  };
+   if (startupId) {
+     axios
+       .post(
+         `http://localhost:8000/api/sectors/${startupId}`,
+         { sectors: sectorData }, // Request body
+         {
+           headers: {
+             Authorization: `Bearer ${token}`, // Include the token in the headers
+             "Content-Type": "application/json",
+           },
+         }
+       )
+      
+       .catch((error) => {
+         console.error("There was an error updating the sectors!", error);
+       });
+   } else {
+     console.log("No startupId provided. Skipping API call.");
+   }
+
+   setOpen(false);
+   const updatedSectors = sectorData.filter((sector) =>
+     selectedSectors.includes(sector.id)
+   );
+   setDisplaySectors(updatedSectors);
+ };
+
 
   return (
     <>
@@ -109,7 +114,6 @@ const AddSector = ({ sectors, startupId = null }) => {
           className="btn-add-sector"
           startIcon={<AddIcon className="btn-plus" />}
           onClick={() => setOpen(true)}
-        
           color="primary"
         >
           Add Sector

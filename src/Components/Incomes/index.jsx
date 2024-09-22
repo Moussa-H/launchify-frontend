@@ -1,67 +1,75 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Snackbar, Alert } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
+import dayjs from "dayjs";
+import "./style.css";
 
 // Base API URL and headers
 const token = localStorage.getItem("token");
-const API_URL = "http://localhost:8000/api/investor";
+const API_URL = "http://localhost:8000/api/incomes"; // Adjusted to your incomes endpoint
 const headers = {
-  Authorization: `Bearer ${token}`,
+  Authorization: `Bearer ${token}`, // Ensure 'token' is defined or retrieved appropriately
   "Content-Type": "application/json",
 };
 
-const Profile = () => {
+const Incomes = () => {
+  const [date, setDate] = useState(dayjs());
   const [formValues, setFormValues] = useState({
-    first_name: "",
-    last_name: "",
-    description: "",
-    email: "",
-    phone_number: "",
-    investment_source: "",
-    linkedin_url: "",
+    product_sales: "",
+    service_revenue: "",
+    subscription_fees: "",
+    investment_income: "",
   });
   const [isUpdating, setIsUpdating] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
-    fetchInvestorProfile();
-  }, []);
+    fetchIncomes();
+  }, [date]);
 
-  // Fetch investor profile data
-  const fetchInvestorProfile = async () => {
+  // Fetch incomes based on the selected date
+  const fetchIncomes = async () => {
     try {
-      const response = await axios.get(API_URL, { headers });
+      const year = date.year();
+      const month = date.month() + 1;
 
-      if (response.data.status === "success") {
-        const investor = response.data.investors[0]; // Assuming there's only one investor profile
+      // Fetch the incomes for the selected year and month
+      const response = await axios.get(API_URL, {
+        headers,
+        params: { year, month },
+      });
+
+      const incomesData = response.data.data;
+
+      if (incomesData && incomesData.length > 0) {
+        const income = incomesData[0]; // Assuming only one record for the given month/year
         setFormValues({
-          first_name: investor.first_name || "",
-          last_name: investor.last_name || "",
-          description: investor.description || "",
-          email: investor.email || "",
-          phone_number: investor.phone_number || "",
-          investment_source: investor.investment_source || "",
-          linkedin_url: investor.linkedin_url || "",
+          product_sales: income.product_sales || "",
+          service_revenue: income.service_revenue || "",
+          subscription_fees: income.subscription_fees || "",
+          investment_income: income.investment_income || "",
         });
         setIsUpdating(true);
-      } else if (response.data.status === "error") {
+      } else {
         resetForm();
         setIsUpdating(false);
       }
     } catch (error) {
-      console.error("Error fetching profile:", error);
+      console.error("Error fetching incomes:", error);
     }
   };
 
   // Reset form fields
   const resetForm = () => {
     setFormValues({
-      first_name: "",
-      last_name: "",
-      description: "",
-      email: "",
-      phone_number: "",
-      investment_source: "",
-      linkedin_url: "",
+      product_sales: "",
+      service_revenue: "",
+      subscription_fees: "",
+      investment_income: "",
     });
   };
 
@@ -74,38 +82,75 @@ const Profile = () => {
     }));
   };
 
-  // Handle saving or updating profile
+  // Handle saving or updating incomes
   const handleSave = async () => {
-    try {
-      const payload = { ...formValues };
+    const payload = {
+      ...formValues,
+      year: date.year(),
+      month: date.month() + 1, // zero-indexed in dayjs
+    };
 
+    try {
       if (isUpdating) {
-        await axios.put(API_URL, payload, { headers }); // Update profile
-        console.log("Profile updated successfully!");
+        await axios.put(API_URL, payload, { headers }); // Update incomes
+        setSuccessMessage("Incomes updated successfully!");
       } else {
-        await axios.post(API_URL, payload, { headers }); // Save new profile
-        console.log("Profile saved successfully!");
+        await axios.post(API_URL, payload, { headers }); // Save new incomes
+        setSuccessMessage("Incomes saved successfully!");
       }
+
+      // Open success message
+      setOpenSnackbar(true);
     } catch (error) {
-      console.error("Error saving profile:", error);
+      console.error("Error saving incomes:", error);
     }
+  };
+
+  // Handle closing of Snackbar
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
   };
 
   return (
     <div className="container border p-5 mt">
+      {/* Snackbar for success message */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
+
+      <div className="col-md-10 mb-4 mx-auto p-0">
+        <div className="date-flex">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+             
+              views={["month", "year"]}
+              value={date}
+              onChange={(newValue) => setDate(newValue)}
+            />
+          </LocalizationProvider>
+        </div>
+      </div>
+
       <div className="row display-center">
         {Object.keys(formValues).map((key) => (
-          <div
-            key={key}
-            className={
-              key === "description"
-                ? "col-12 col-md-12 mb-4"
-                : "col-12 col-md-5 mb-4"
-            }
-          >
-            <div>{key}</div>
+          <div key={key} className="col-12 col-md-5 mb-4">
             <TextField
               label={key.replace("_", " ").toUpperCase()}
+              type="number"
               variant="filled"
               fullWidth
               className="mt-4"
@@ -129,4 +174,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Incomes;
