@@ -1,19 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css"; 
+import { NavLink } from "react-router-dom"; // Import NavLink
+import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "../../assets/logo.svg";
 import "./style.css";
 
-function Navbar({comp}) {
-    const navClassName = `navbar navbar-expand-lg navbar-light bg-transparent${
-      comp === "home" ? " abs" : ""
-    }`;
+function Navbar({ comp }) {
+  const navClassName = `navbar navbar-expand-lg navbar-light bg-transparent${
+    comp === "home" ? " abs" : ""
+  }`;
+
   return (
     <nav className={navClassName}>
       <div className="container-fluid w-90 mx-auto py-4">
-        <Link className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/">
           <img src={logo} alt="Logo" />
-        </Link>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"
@@ -28,40 +29,56 @@ function Navbar({comp}) {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto">
             <li className="nav-item px-4">
-              <Link className="nav-link" to="/Startups">
+              <NavLink
+                className="nav-link"
+                to="/startups"
+                activeClassName="active" // Add this line
+              >
                 Startups
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item px-4">
-              <Link className="nav-link" to="/investors">
+              <NavLink
+                className="nav-link"
+                to="/investors"
+                activeClassName="active" // Add this line
+              >
                 Investors
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item px-4">
-              <Link className="nav-link" to="/mentors">
+              <NavLink
+                className="nav-link"
+                to="/mentors"
+                activeClassName="active" // Add this line
+              >
                 Mentors
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item px-4">
-              <Link className="nav-link" to="/about-us">
+              <NavLink
+                className="nav-link"
+                to="/about-us"
+                activeClassName="active" // Add this line
+              >
                 About Us
-              </Link>
+              </NavLink>
             </li>
           </ul>
 
           <ul className="navbar-nav">
             <li className="nav-item px-4">
-              <Link className="btn btn-primary mr-4" to="/sign-up">
+              <NavLink className="btn btn-primary mr-4" to="/sign-up">
                 Join now
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item px-2">
-              <Link
+              <NavLink
                 className="btn btn-outline-primary bg-transparent border-0"
                 to="/login"
               >
                 Login
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

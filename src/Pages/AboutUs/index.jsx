@@ -14,12 +14,29 @@ export default function AboutUs() {
   return (
     <div>
       <Layout>
-        <BannerSection title={title} image={heroImage}/>
-        <ImageandText
-          title="Our Mission"
-          description="Our mission is to empower startups by providing them with the tools and insights they need to bring innovative app ideas to life, ensuring success in a competitive market."
-          image={mission}
-        />
+        <BannerSection title={title} image={heroImage} />
+      
+
+        <div className="container info-section">
+          <div className="row align-items-center-real">
+            <div className="col-md-6 text-content">
+              <h2>Our Mission</h2>
+              <p>
+                Our mission is to empower startups by providing them with the
+                tools and insights they need to bring innovative app ideas to
+                life, ensuring success in a competitive market.
+              </p>
+            </div>
+            <div className="col-md-6 d-flex justify-content-center-real">
+              <img
+                src={mission}
+                className="section-image-real"
+                alt="Industry Leaders"
+              />
+            </div>
+          </div>
+        </div>
+
         <h2 className="features-heading">Our Features</h2>
         <ImageandText
           title="AI-Powered Website Idea Validation"

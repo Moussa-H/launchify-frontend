@@ -5,7 +5,7 @@ import "./style.css";
 
 import AddSector from "../../../../Components/AddSector";
 import CompanyReview from "../../../../Components/CompanyReview";
-import ImageUpload from "../../../../Components/ImageUpload";
+
 import CurrentlyRaising from "../../../../Components/CurrentlyRaising";
 import CompanyReviewForm from "../../../../Components/CompanyReviewForm";
 import axios from "axios";
@@ -36,52 +36,10 @@ const Profile = () => {
     currently_raising_type: "",
     currently_raising_size: "",
   });
-  
-  const [errors, setErrors] = useState({});
+
   const [successMessage, setSuccessMessage] = useState("");
+  const [isStartupCreated, setIsStartupCreated] = useState(false); // Track if the startup has been created
   const token = localStorage.getItem("token");
-
-
-
-
-const saveSectors = (selectedSectors) => {
-  const sectorData = selectedSectors.map((id) => {
-    const sector = sectors.find((sector) => sector.id === id);
-    return { id: sector.id, name: sector.name };
-  });
-
-  if (formData.id) {
-    axios
-      .post(
-        `http://localhost:8000/api/sectors/${formData.id}`,
-        { sectors: sectorData }, // Request body
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        // Handle success, maybe update the sectors state
-        console.log("Sectors updated successfully", response.data);
-      })
-      .catch((error) => {
-        console.error("There was an error updating the sectors!", error);
-      });
-  } else {
-    console.log("No startupId provided. Skipping API call.");
-  }
-};
-
-
-
-
-
-
-
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,6 +57,7 @@ const saveSectors = (selectedSectors) => {
           }));
           setSectors(startup.sectors || []);
           setInvestmentSources(startup.investment_sources || []);
+          setIsStartupCreated(true); // If fetching existing startup, set this to true
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -122,36 +81,73 @@ const saveSectors = (selectedSectors) => {
   const handleSave = async () => {
     const apiUrl = "http://localhost:8000/api/startup";
 
-    // Log the formData to check its values
     console.log("formData before sending:", formData);
-
-    // Append each field to FormData
 
     const data = {
       ...formData,
-      // If you need to send the image URL instead of the file
-      image: formData.image ? formData.image : null,
     };
-    console.log("data",data);
+
     const id = formData.id;
-    console.log(id,"id")
+    console.log("Submitting ID:", id);
+
     try {
       const headers = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       };
 
-      if (!id) {
+      let response;
 
-        // Create new startup
-        const response = await axios.post(apiUrl, data, { headers });
-        console.log("Startup created:", response.data);
+      if (id && data && Object.keys(data).length > 0) {
+        console.log("Updating startup with data:", data);
+        response = await axios.post(`${apiUrl}/${id}`, data, { headers });
       } else {
-        console.log("data updated before put", data)
-        // Update existing startup
-        const response = await axios.put(`${apiUrl}/${id}`, data, { headers });
-        console.log("Startup updated:", response.data);
+        console.log("Creating new startup with data:", data);
+        response = await axios.post(apiUrl, data, { headers });
+
+        if (!response || !response.data || !response.data.startup) {
+          throw new Error(
+            "Startup creation failed or returned unexpected data."
+          );
+        }
+
+        console.log("Startup created successfully:", response.data);
+        setIsStartupCreated(true); // Set this to true after successful creation
+
+        const sectorData = localStorage.getItem("sectors");
+        console.log("Sector data from localStorage:", sectorData);
+
+        let parsedSectorData;
+        try {
+          parsedSectorData = JSON.parse(sectorData);
+        } catch (e) {
+          throw new Error("Failed to parse sector data: " + e.message);
+        }
+
+        if (!parsedSectorData || !Array.isArray(parsedSectorData)) {
+          throw new Error(
+            "Invalid sectors data. Expected an array of sectors."
+          );
+        }
+
+        await axios.post(
+          `http://localhost:8000/api/sectors/${response.data.startup.id}`,
+          { sectors: parsedSectorData },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Sectors posted successfully");
       }
+      setFormData((prevValues) => ({
+        ...prevValues,
+        id: response.data.startup.id, // Save the new ID
+      }));
+      console.log("Startup saved:", response.data);
       setSuccessMessage("Successfully saved changes!");
     } catch (error) {
       console.error(
@@ -160,6 +156,7 @@ const saveSectors = (selectedSectors) => {
       );
     }
   };
+
   const handleImageChange = (event) => {
     setFormData((prevValues) => ({
       ...prevValues,
@@ -251,7 +248,6 @@ const saveSectors = (selectedSectors) => {
             formData={formData}
             handleInputChange={handleInputChange}
             handleCountryChange={handleCountryChange}
-            errors={errors}
           />
 
           <CurrentlyRaising
@@ -260,6 +256,7 @@ const saveSectors = (selectedSectors) => {
             currently_raising_type={formData.currently_raising_type}
             currently_raising_size={formData.currently_raising_size}
             investment_sources={investmentSources}
+            disabled={!isStartupCreated} // Disable if startup not created
           />
 
           <div className="d-flex justify-content-end mt-4">
@@ -269,12 +266,14 @@ const saveSectors = (selectedSectors) => {
           </div>
         </div>
       )}
-      {activeSection === "team" && (
-        <AddMember token={token} startupId={formData.id} />
-      )}
+
+      {/* Team Section */}
+      {activeSection === "team" && <AddMember startupId={formData.id} />}
+
+      {/* Snackbar for success message */}
       <Snackbar
-        open={Boolean(successMessage)}
-        autoHideDuration={6000}
+        open={!!successMessage}
+        autoHideDuration={3000}
         onClose={handleClose}
         message={successMessage}
       />

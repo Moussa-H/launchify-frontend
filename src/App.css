@@ -8,3 +8,6 @@ a.btn.btn-primary.custom-btn {
 * {
   font-family: 'Poppins', sans-serif!important;
 }
+.footer ul li a:hover {
+    text-decoration: none;
+}

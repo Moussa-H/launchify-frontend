@@ -82,13 +82,14 @@ const GraphIncomes = ({ token }) => {
         {loading ? (
           <CircularProgress />
         ) : incomeData ? (
-          <PieChart width={400} height={300}>
+          <PieChart width={400} height={310}>
             <Pie
               data={pieChartData}
               dataKey="value"
               outerRadius={100}
               fill="#8884d8"
               label
+              
             >
               {pieChartData.map((entry, index) => (
                 <Cell

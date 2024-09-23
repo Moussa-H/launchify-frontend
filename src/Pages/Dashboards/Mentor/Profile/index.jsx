@@ -96,30 +96,49 @@ const Profile = ({ token }) => {
     setSuccess(null);
     const formData = new FormData();
 
-    // Append each form value to FormData
-    // Append each field to FormData
+    // Append each form value to FormData, except for the image if it hasn't changed
     for (const [key, value] of Object.entries(formValues)) {
+      if (key === "image" && value === formValues.image) {
+        // Skip appending the image if it hasn't changed
+        continue;
+      }
       formData.append(key, value);
     }
 
     try {
       console.log("formData", formData);
-        console.log("token", token);
-         console.log("formValues", formValues);
+      console.log("token", token);
+      console.log("formValues", formValues);
+
+      // Check if the image file has changed
+      const imageChanged = formValues.image && formValues.image instanceof File;
+
+      // Set content type based on whether the image has changed
+      const contentType =
+        imageChanged || formValues.image
+          ? "multipart/form-data"
+          : "application/json";
+
+      // Prepare the request data
+      const requestData =
+        imageChanged || formValues.image
+          ? formData
+          : JSON.stringify(formValues);
+ console.log("requestData", requestData);
+      // Make the API call based on whether the mentorId exists
       if (mentorId) {
-        await axios.post(`${API_URL}/${mentorId}`, formValues, {
+        await axios.post(`${API_URL}/${mentorId}`, requestData, {
           headers: {
             ...headers,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": contentType, // Dynamic content type
           },
         });
-
         setSuccess("Profile updated successfully!");
       } else {
-        await axios.post(API_URL, formData, {
+        await axios.post(API_URL, requestData, {
           headers: {
             ...headers,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": contentType, // Dynamic content type
           },
         });
         setSuccess("Profile saved successfully!");
@@ -129,6 +148,8 @@ const Profile = ({ token }) => {
       console.error("Error saving profile:", error);
     }
   };
+
+
 
   return (
     <div className="container border py-4 mt-5">

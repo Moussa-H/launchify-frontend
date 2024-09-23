@@ -1,20 +1,22 @@
 import React from "react";
 import DashboardLayout from "../DashboardLayout";
 import Sidebar from "../../../Components/Sidebar";
-import { House, MessageCircle } from "lucide-react"; // Ensure you have these icons
+import { House, MessageCircle, Users } from "lucide-react"; // Ensure you have these icons
 import Profile from "../Mentor/Profile";
 import Messages from "../Mentor/Messages";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import MentorMessage from "../Mentor/MentorMessage";
+import AcceptedStartups from "../Mentor/AcceptedStartups";
+import ChatMessagesMentor from "../Mentor/ChatMessagesMentor";
 const token=localStorage.getItem("token")
+
 console.log(token);
 const MentorDashboard = () => {
   const navigate = useNavigate(); // Hook for navigating programmatically
 
   const links = [
     { to: "profile", label: "Profile", icon: <House /> },
-    { to: "messages", label: "Messages", icon: <MessageCircle /> },
-    { to: "message", label: "Message", icon: <MessageCircle /> },
+    { to: "messages", label: "Request messages", icon: <MessageCircle /> },
+    { to: "startups", label: "Startups", icon: <Users /> },
   ];
 
   const handleLinkClick = (to) => {
@@ -34,9 +36,10 @@ const MentorDashboard = () => {
       <Routes>
         <Route path="profile" element={<Profile token={token} />} />
         <Route path="messages" element={<Messages token={token} />} />
+        <Route path="startups" element={<AcceptedStartups />} />
         <Route
-          path="message"
-          element={<MentorMessage />}
+          path="startups/:mentorId/:startupId/:senderType"
+          element={<ChatMessagesMentor />}
         />
       </Routes>
     </DashboardLayout>

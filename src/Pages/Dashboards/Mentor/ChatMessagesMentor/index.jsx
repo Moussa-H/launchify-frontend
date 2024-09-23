@@ -9,14 +9,16 @@ import {
   Avatar,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import "./style.css"
 import { useParams } from "react-router-dom";
 
-const ChatMessages = () => {
+const ChatMessagesMentor = () => {
   const { startupId, mentorId, senderType } = useParams();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
   const [mentor, setMentor] = useState({ name: "", industry: "", image: "" });
+  const [startup, setStartup] = useState({ name: "", industry: "" }); // State for startup info
   const token = localStorage.getItem("token");
 
   const fetchMessages = useCallback(async () => {
@@ -58,11 +60,31 @@ const ChatMessages = () => {
     }
   }, [mentorId, token]);
 
+  const fetchStartup = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/startup/${startupId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.data.status === "success") {
+        const { company_name, industry } = response.data.startup;
+        setStartup({
+          name: company_name,
+          industry,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching startup details:", error);
+    }
+  }, [startupId, token]);
+
   useEffect(() => {
     fetchMessages();
     fetchMentor();
-    // Echo channel setup omitted for brevity
-  }, [fetchMessages, fetchMentor, startupId, mentorId]);
+    fetchStartup();
+  }, [fetchMessages, fetchMentor, fetchStartup, startupId, mentorId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -90,28 +112,20 @@ const ChatMessages = () => {
     setMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/chat/message/send",
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!response.data.message) {
-        console.error("Failed to send message:", response.data.message);
-      }
+      await axios.post("http://localhost:8000/api/chat/message/send", payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
   const Message = ({ msg }) => {
-    const isSenderStartup = msg.sender_type === "startup";
-    const isCurrentUserStartup = senderType === "startup";
-    const alignRight = isSenderStartup === isCurrentUserStartup;
+    const isSenderMentor = msg.sender_type === "mentor";
+    const alignRight = isSenderMentor;
 
     return (
       <Box
@@ -128,7 +142,8 @@ const ChatMessages = () => {
               p: 2,
               maxWidth: "70%",
               borderRadius: 2,
-              bgcolor: alignRight ? "#d1e7dd" : "#e9ecef",
+              bgcolor: "#e9ecef",
+              display: "flex",
               m: 1,
             }}
           >
@@ -172,13 +187,14 @@ const ChatMessages = () => {
           alt={mentor.name}
           sx={{ width: 56, height: 56, mr: 2 }}
         />
-        <Box>
-          <Typography variant="h6">{mentor.name}</Typography>
+        
+        <Box sx={{ ml: 4 }}>
+          <Typography variant="h6">{startup.name}</Typography>
           <Typography
             variant="body2"
             sx={{ color: "rgba(255, 255, 255, 0.7)" }}
           >
-            {mentor.industry}
+            {startup.industry}
           </Typography>
         </Box>
       </Box>
@@ -229,4 +245,4 @@ const ChatMessages = () => {
   );
 };
 
-export default ChatMessages;
+export default ChatMessagesMentor;

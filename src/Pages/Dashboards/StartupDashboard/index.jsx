@@ -7,7 +7,6 @@ import Strategies from "../Startup/Strategies";
 import DataEntry from "../Startup/DataEntry";
 import FinanceDashboard from "../Startup/FinanceDashboard";
 import MentorDirectory from "../Startup/MentorDirectory"; // Import Mentor Directory page
-import MentorMatch from "../Startup/MentorMatch"; // Import Mentor Match page
 import { Routes, Route, useNavigate } from "react-router-dom";
 import ChatMessages from "../Startup/ChatMessages";
 import StrategiesTable from "../../../Components/StrategiesTable";

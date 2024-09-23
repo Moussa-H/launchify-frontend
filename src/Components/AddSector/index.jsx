@@ -64,7 +64,7 @@ const AddSector = ({ sectors, startupId = null }) => {
      const sector = allSectors.find((sector) => sector.id === id);
      return { id: sector.id, name: sector.name }; // Include both id and name
    });
-
+  localStorage.setItem("sectors", JSON.stringify(sectorData));
    if (startupId) {
      axios
        .post(
@@ -77,6 +77,7 @@ const AddSector = ({ sectors, startupId = null }) => {
            },
          }
        )
+     
       
        .catch((error) => {
          console.error("There was an error updating the sectors!", error);

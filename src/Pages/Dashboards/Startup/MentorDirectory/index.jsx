@@ -18,6 +18,7 @@ import PopupSendRequest from "../../../../Components/PopupSendRequest"; // Adjus
 import "./style.css";
 
 const MentorDirectory = () => {
+    const [startupid, setStartupId] = useState("");
   const [mentors, setMentors] = useState([]);
   const [filteredMentors, setFilteredMentors] = useState([]);
   const [search, setSearch] = useState("");
@@ -37,8 +38,11 @@ const MentorDirectory = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.status === "success") {
+         setStartupId(response.data.startupId);
+          console.log(response);
           setMentors(response.data.mentors);
           setFilteredMentors(response.data.mentors);
+    
         }
       } catch (error) {
         console.error("Error fetching mentors:", error);
@@ -81,13 +85,11 @@ const MentorDirectory = () => {
         return {};
     }
   };
-   const senderType = "startup";
-   const startupId = "9";
+  const senderType = "startup";
+
   const handleIconClick = (status, mentorId) => {
     if (status === "accepted") {
-    const senderType = "startup";
-    const startupId = "9";
-      navigate(`chats/${mentorId}/${startupId}/${senderType}`); // Navigate to the chat page with mentorId
+      navigate(`chats/${mentorId}/${startupid}/${senderType}`); // Navigate to the chat page with mentorId
     } else if (status === "none") {
       // Open the popup if the status is "none" (for sending a request)
       setSelectedMentorId(mentorId);
@@ -215,7 +217,13 @@ const MentorDirectory = () => {
                     </Typography>
                   )}
                   {mentor.status === "accepted" ? (
-                    <IconButton onClick={() => navigate(`chats/${mentor.id}/${startupId}/${senderType}`)}>
+                    <IconButton
+                      onClick={() =>
+                        navigate(
+                          `chats/${mentor.id}/${startupid}/${senderType}`
+                        )
+                      }
+                    >
                       <MessageCircleMore />
                     </IconButton>
                   ) : (

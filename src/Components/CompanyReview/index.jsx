@@ -18,6 +18,7 @@ const CompanyReview = ({ formData, setFormData }) => {
           name="company_name"
           value={formData.company_name || ""}
           onChange={handleInputChange}
+          required
         />
       </div>
       <div className="mb-3">
@@ -31,6 +32,7 @@ const CompanyReview = ({ formData, setFormData }) => {
           name="description"
           value={formData.description || ""}
           onChange={handleInputChange}
+          required
         />
       </div>
     </div>

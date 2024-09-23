@@ -21,6 +21,7 @@ const CompanyReviewForm = ({
             name="founder"
             value={formData.founder || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-6 mb-4">
@@ -31,6 +32,7 @@ const CompanyReviewForm = ({
             name="industry"
             value={formData.industry || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
@@ -42,6 +44,7 @@ const CompanyReviewForm = ({
             value={formData.founding_year || ""}
             onChange={handleInputChange}
             type="number"
+             
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
@@ -53,6 +56,7 @@ const CompanyReviewForm = ({
             name="country"
             value={formData.country || null} // Controlled value
             onChange={(event, newValue) => handleCountryChange(newValue)} // Correctly call handler
+             
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
@@ -63,6 +67,7 @@ const CompanyReviewForm = ({
             name="city"
             value={formData.city || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-6 mb-4">
@@ -73,6 +78,7 @@ const CompanyReviewForm = ({
             name="key_challenges"
             value={formData.key_challenges || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-6 mb-4">
@@ -83,6 +89,7 @@ const CompanyReviewForm = ({
             name="goals"
             value={formData.goals || ""}
             onChange={handleInputChange}
+             
           />
         </div>
       </div>
@@ -100,6 +107,7 @@ const CompanyReviewForm = ({
             select
             value={formData.business_type || ""}
             onChange={handleInputChange}
+             
           >
             <MenuItem value="B2B">B2B</MenuItem>
             <MenuItem value="B2C">B2C</MenuItem>
@@ -117,6 +125,7 @@ const CompanyReviewForm = ({
             select
             value={formData.company_stage || ""}
             onChange={handleInputChange}
+             
           >
             <MenuItem value="Idea">Idea</MenuItem>
             <MenuItem value="Pre-seed">Pre-seed</MenuItem>
@@ -135,6 +144,7 @@ const CompanyReviewForm = ({
             type="number"
             value={formData.employees_count || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
@@ -145,6 +155,7 @@ const CompanyReviewForm = ({
             name="phone_number"
             value={formData.phone_number || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
@@ -156,6 +167,7 @@ const CompanyReviewForm = ({
             type="email"
             value={formData.email_address || ""}
             onChange={handleInputChange}
+             
           />
         </div>
         <div className="col-12 col-md-4 mb-4">
@@ -167,6 +179,7 @@ const CompanyReviewForm = ({
             type="url"
             value={formData.website_url || ""}
             onChange={handleInputChange}
+             
           />
         </div>
       </div>
