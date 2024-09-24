@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import "./style.css";
 
 const ExpensesTable = ({ token }) => {
@@ -18,18 +18,15 @@ const ExpensesTable = ({ token }) => {
     console.log("year", year);
     console.log("month", month);
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/totalexpenses",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            year: year,
-            month: month,
-          },
-        }
-      );
+      const response = await axiosInstance.get("/totalexpenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          year: year,
+          month: month,
+        },
+      });
       console.log("response.data.data", response.data);
       setExpensesData(response.data.data);
     } catch (error) {

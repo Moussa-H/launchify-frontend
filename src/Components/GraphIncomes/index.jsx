@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import {
   Container,
   Typography,
@@ -23,7 +23,7 @@ const GraphIncomes = ({ token }) => {
   const fetchIncomeData = async (year, month) => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:8000/api/incomes", {
+      const response = await axiosInstance.get("/incomes", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import { useParams, useNavigate } from "react-router-dom";
 import "./style.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -24,8 +24,8 @@ const InvestmentForm = () => {
   useEffect(() => {
     const fetchStartupInfo = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/getInformationPayment`,
+        const response = await axiosInstance.get(
+          `/getInformationPayment`,
           {
             params: { startup_id: startupId },
             headers: {
@@ -79,8 +79,8 @@ const InvestmentForm = () => {
 
     try {
       console.log(startupId, amount, paymentMethod.id);
-     const response = await axios.post(
-       "http://localhost:8000/api/investments",
+     const response = await axiosInstance.post(
+       "/investments",
        {
          startup_id: startupId,
          amount: parseInt(amount, 10),

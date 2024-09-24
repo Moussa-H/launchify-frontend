@@ -13,12 +13,12 @@ import {
   IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import SearchIcon from "@mui/icons-material/Search";
 import StartupDetails from "../StartupDetails"; // Import the StartupDetails component
 import "./style.css";
 
-const API_URL = "http://localhost:8000/api/startups";
+const API_URL = "/startups";
 const token = localStorage.getItem("token");
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ const Startups = () => {
 
   const fetchStartups = async () => {
     try {
-      const response = await axios.get(API_URL, { headers });
+      const response = await axiosInstance.get(API_URL, { headers });
       if (response.data.status === "success") {
         setStartups(response.data.startups);
       }

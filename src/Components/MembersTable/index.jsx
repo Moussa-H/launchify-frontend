@@ -1,7 +1,7 @@
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { Button } from "@mui/material";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import PopupMember from "../PopupMember";
 import "./style.css"
 export default function MembersTable({
@@ -32,8 +32,8 @@ export default function MembersTable({
     console.log("id", id);
     console.log("startupId", startupId);
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/team-members/${startupId}/${id}`,
+      const response = await axiosInstance.delete(
+        `/team-members/${startupId}/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

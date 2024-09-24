@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import { Grid, Card, CardContent, Typography } from "@mui/material";
-import { Container, Row, Col } from "react-bootstrap";
+import {  Row, Col } from "react-bootstrap";
 import "./style.css";
 
 const FinancialCards = ({ token }) => {
@@ -17,8 +17,8 @@ const FinancialCards = ({ token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/total-expenses-incomes",
+        const response = await axiosInstance.get(
+          "/total-expenses-incomes",
           {
             headers: {
               Authorization: `Bearer ${token}`, // Authorization header

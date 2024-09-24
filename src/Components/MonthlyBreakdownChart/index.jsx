@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import {
   Container,
   Typography,
@@ -33,18 +33,15 @@ const MonthlyBreakdownChart = ({ token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/monthly-breakdown",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            params: {
-              year: selectedYear,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/monthly-breakdown", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            year: selectedYear,
+          },
+        });
         const { data: responseData, max_income, max_expense } = response.data;
 
         setData(responseData);

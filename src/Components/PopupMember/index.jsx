@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 const PopupMember = ({
   startupId,
@@ -44,8 +44,8 @@ const PopupMember = ({
       let response;
       if (isEditing) {
         // Update existing member
-        response = await axios.put(
-          `http://localhost:8000/api/team-members/${startupId}/${memberToEdit.id}`,
+        response = await axiosInstance.put(
+          `/team-members/${startupId}/${memberToEdit.id}`,
           { fullname, position, salary },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -57,8 +57,8 @@ const PopupMember = ({
         });
       } else {
         // Add new member
-        response = await axios.post(
-          `http://localhost:8000/api/team-members/${startupId}`,
+        response = await axiosInstance.post(
+          `/team-members/${startupId}`,
           { fullname, position, salary },
           { headers: { Authorization: `Bearer ${token}` } }
         );

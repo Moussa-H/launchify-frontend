@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { debounce } from "lodash";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import "./style.css";
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 
@@ -102,8 +102,8 @@ const StrategiesTable = ({ strategies = {}, token }) => {
   useEffect(() => {
     const fetchStrategies = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:8000/api/strategies",
+        const response = await axiosInstance.post(
+          "/strategies",
           {},
           {
             headers: {
@@ -134,8 +134,8 @@ const StrategiesTable = ({ strategies = {}, token }) => {
     setLoadingStatus(strategyKey);
     setStatusError(null);
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/strategies/update-status",
+      const response = await axiosInstance.post(
+        "/strategies/update-status",
         { [strategyKey]: newStatus },
         {
           headers: {

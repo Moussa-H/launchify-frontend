@@ -16,7 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import dayjs from "dayjs";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import "./style.css"
 const TableInvestment = ({token}) => {
   const [date, setDate] = useState(dayjs()); // Default to current month and year
@@ -27,16 +27,19 @@ const TableInvestment = ({token}) => {
   const fetchInvestments = async (selectedDate) => {
     setLoading(true);
   try {
-    const response = await axios.get("http://localhost:8000/api/getstartups", {
-      params: {
-        year: selectedDate.year(),
-        month: selectedDate.month() + 1, // month is zero-indexed in dayjs, so add 1
-      },
-      headers: {
-        Authorization: `Bearer ${token}`, // Ensure 'token' is defined correctly
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance.get(
+      "/getstartups",
+      {
+        params: {
+          year: selectedDate.year(),
+          month: selectedDate.month() + 1, // month is zero-indexed in dayjs, so add 1
+        },
+        headers: {
+          Authorization: `Bearer ${token}`, // Ensure 'token' is defined correctly
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     setInvestments(response.data.startups);
   } catch (error) {

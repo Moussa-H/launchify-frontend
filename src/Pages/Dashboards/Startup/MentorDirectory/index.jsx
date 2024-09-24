@@ -13,7 +13,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { MessageCircleMore, CornerUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import PopupSendRequest from "../../../../Components/PopupSendRequest"; // Adjust path as needed
 import "./style.css";
 
@@ -34,9 +34,12 @@ const MentorDirectory = () => {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/mentors", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axiosInstance.get(
+          "/mentors",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (response.data.status === "success") {
          setStartupId(response.data.startupId);
           console.log(response);

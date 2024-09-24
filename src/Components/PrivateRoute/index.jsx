@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 const PrivateRoute = ({ element, allowedRoles }) => {
@@ -19,10 +19,13 @@ const PrivateRoute = ({ element, allowedRoles }) => {
 
     const fetchRole = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/getRole", {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { username },
-        });
+        const response = await axiosInstance.get(
+          "/getRole",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { username },
+          }
+        );
 
         const userRole = response.data.role;
         if (userRole) {

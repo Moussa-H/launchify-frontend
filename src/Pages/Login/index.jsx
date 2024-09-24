@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert, Spinner } from "react-bootstrap";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import "./style.css"; // Import the CSS file
 import logo from "../../assets/logo.svg";
 import { useNavigate, Link } from "react-router-dom";
@@ -26,8 +26,8 @@ const Login = () => {
     setLoading(true); // Set loading to true when starting the request
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/login",
+      const response = await axiosInstance.post(
+        "/login",
         formData
       );
       const { status, user, authorisation } = response.data;

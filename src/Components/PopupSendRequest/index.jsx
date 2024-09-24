@@ -8,7 +8,7 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import { CheckCircleOutline } from "@mui/icons-material"; // Professional icon for request
 import CloseIcon from "@mui/icons-material/Close"; // Icon to close the popup
 
@@ -26,8 +26,8 @@ const PopupSendRequest = ({
     setLoading(true);
     console.log()
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/request",
+      const response = await axiosInstance.post(
+        "/request",
         {
           mentor_id: mentorId,
           status: "pending",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import {
   Table,
   TableBody,
@@ -21,8 +21,8 @@ const Messages = ({ token }) => {
 
   useEffect(() => {
     // Fetch data from API
-    axios
-      .get("http://localhost:8000/api/getRequests", {
+    axiosInstance
+      .get("/getRequests", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -46,8 +46,8 @@ const Messages = ({ token }) => {
   };
 
   const updateRequestStatus = (startupId, status) => {
-    return axios.post(
-      "http://localhost:8000/api/sendResponse",
+    return axiosInstance.post(
+      "/sendResponse",
       { startup_id: startupId, status },
       { headers: { Authorization: `Bearer ${token}` } }
     );

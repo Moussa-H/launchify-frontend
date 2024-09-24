@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import {
   Button,
   Dialog,
@@ -21,8 +21,8 @@ const AddSector = ({ sectors, startupId = null }) => {
   useEffect(() => {
     if (open) {
       // Fetch sectors when the dialog is opened
-      axios
-        .get("http://localhost:8000/api/sectors", {
+      axiosInstance
+        .get("axiosInstance/sectors", {
           headers: {
             Authorization: `Bearer ${token}`, // Add token to request header
           },
@@ -66,9 +66,9 @@ const AddSector = ({ sectors, startupId = null }) => {
    });
   localStorage.setItem("sectors", JSON.stringify(sectorData));
    if (startupId) {
-     axios
+     axiosInstance
        .post(
-         `http://localhost:8000/api/sectors/${startupId}`,
+         `/sectors/${startupId}`,
          { sectors: sectorData }, // Request body
          {
            headers: {
@@ -77,8 +77,7 @@ const AddSector = ({ sectors, startupId = null }) => {
            },
          }
        )
-     
-      
+
        .catch((error) => {
          console.error("There was an error updating the sectors!", error);
        });

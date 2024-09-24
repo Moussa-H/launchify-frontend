@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Alert, Spinner } from "react-bootstrap";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import { useNavigate, Link } from "react-router-dom";
 import "./style.css";
 import logo from "../../assets/logo.svg";
@@ -30,8 +30,8 @@ const SignUp = () => {
     setLoading(true); // Set loading to true when starting the request
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/register",
+      const response = await axiosInstance.post(
+        "/register",
         formData
       );
       navigate("/login");

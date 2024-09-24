@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import {
   TextField,
   IconButton,
@@ -21,8 +21,8 @@ const ChatMessages = () => {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/chat/messages/${mentorId}/${startupId}`,
+      const response = await axiosInstance.get(
+        `/chat/messages/${mentorId}/${startupId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -39,8 +39,8 @@ const ChatMessages = () => {
 
   const fetchMentor = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/mentor/${mentorId}`,
+      const response = await axiosInstance.get(
+        `/mentor/${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -90,8 +90,8 @@ const ChatMessages = () => {
     setMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/chat/message/send",
+      const response = await axiosInstance.post(
+        "/chat/message/send",
         payload,
         {
           headers: {

@@ -8,10 +8,10 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import "./style.css";
 
-const API_URL = "http://localhost:8000/api/mentor";
+const API_URL = "/mentor";
 
 const Profile = ({ token }) => {
   const [mentorId, setMentorId] = useState(null);
@@ -40,7 +40,7 @@ const Profile = ({ token }) => {
   const fetchMentorProfile = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(API_URL, { headers });
+      const response = await axiosInstance.get(API_URL, { headers });
       if (response.data.status === "success") {
         const mentor = response.data.mentors[0];
         setMentorId(mentor.id);
@@ -127,7 +127,7 @@ const Profile = ({ token }) => {
  console.log("requestData", requestData);
       // Make the API call based on whether the mentorId exists
       if (mentorId) {
-        await axios.post(`${API_URL}/${mentorId}`, requestData, {
+        await axiosInstance.post(`${API_URL}/${mentorId}`, requestData, {
           headers: {
             ...headers,
             "Content-Type": contentType, // Dynamic content type
@@ -135,7 +135,7 @@ const Profile = ({ token }) => {
         });
         setSuccess("Profile updated successfully!");
       } else {
-        await axios.post(API_URL, requestData, {
+        await axiosInstance.post(API_URL, requestData, {
           headers: {
             ...headers,
             "Content-Type": contentType, // Dynamic content type

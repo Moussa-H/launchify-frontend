@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import "./style.css"; // Import custom CSS for styling
 import { Padding } from "@mui/icons-material";
 
@@ -10,8 +10,8 @@ const LastStartupsCarousel = ({ token }) => {
   useEffect(() => {
     const fetchStartups = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/getlaststartup",
+        const response = await axiosInstance.get(
+          "/getlaststartup",
           {
             headers: {
               Authorization: `Bearer ${token}`, // Authorization header

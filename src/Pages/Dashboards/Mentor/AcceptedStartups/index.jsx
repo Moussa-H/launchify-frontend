@@ -12,11 +12,11 @@ import {
   IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import SearchIcon from "@mui/icons-material/Search";
 import ChatIcon from "@mui/icons-material/Chat";
 
-const API_URL = "http://localhost:8000/api/getstartupsaccepted";
+const API_URL = "/getstartupsaccepted";
 const token = localStorage.getItem("token");
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ const AcceptedStartups = ({ mentorId=5 }) => {
 
   const fetchStartups = async () => {
     try {
-      const response = await axios.get(API_URL, { headers });
+      const response = await axiosInstance.get(API_URL, { headers });
       if (response.data.status === "success") {
         setStartups(response.data.startups);
       }

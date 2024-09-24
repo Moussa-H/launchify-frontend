@@ -8,7 +8,7 @@ import CompanyReview from "../../../../Components/CompanyReview";
 
 import CurrentlyRaising from "../../../../Components/CurrentlyRaising";
 import CompanyReviewForm from "../../../../Components/CompanyReviewForm";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import AddMember from "../../../../Components/AddMember";
 import { Box } from "@mui/material";
 
@@ -44,9 +44,12 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/startup", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axiosInstance.get(
+          "/startup",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (response.data.startups.length > 0) {
           const startup = response.data.startups[0];
@@ -79,7 +82,7 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    const apiUrl = "http://localhost:8000/api/startup";
+    const apiUrl = "/startup";
 
     console.log("formData before sending:", formData);
 
@@ -100,10 +103,12 @@ const Profile = () => {
 
       if (id && data && Object.keys(data).length > 0) {
         console.log("Updating startup with data:", data);
-        response = await axios.post(`${apiUrl}/${id}`, data, { headers });
+        response = await axiosInstance.post(`${apiUrl}/${id}`, data, {
+          headers,
+        });
       } else {
         console.log("Creating new startup with data:", data);
-        response = await axios.post(apiUrl, data, { headers });
+        response = await axiosInstance.post(apiUrl, data, { headers });
 
         if (!response || !response.data || !response.data.startup) {
           throw new Error(
@@ -130,8 +135,8 @@ const Profile = () => {
           );
         }
 
-        await axios.post(
-          `http://localhost:8000/api/sectors/${response.data.startup.id}`,
+        await axiosInstance.post(
+          `/sectors/${response.data.startup.id}`,
           { sectors: parsedSectorData },
           {
             headers: {

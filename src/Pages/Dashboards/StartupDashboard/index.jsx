@@ -1,7 +1,7 @@
 import React from "react";
 import DashboardLayout from "../DashboardLayout";
 import Sidebar from "../../../Components/Sidebar";
-import { House, Notebook, DollarSign, Wallet, Users } from "lucide-react";
+import { House, Notebook, Wallet, Users } from "lucide-react";
 import Profile from "../Startup/Profile";
 import Strategies from "../Startup/Strategies";
 import DataEntry from "../Startup/DataEntry";

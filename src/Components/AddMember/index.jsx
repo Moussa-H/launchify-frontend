@@ -6,7 +6,7 @@ import MembersTable from "../MembersTable";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 import "./style.css";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 export default function AddMember({ startupId, token }) {
   const [openPopup, setOpenPopup] = useState(false);
@@ -17,15 +17,12 @@ export default function AddMember({ startupId, token }) {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/team-members/${startupId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axiosInstance.get(`/team-members/${startupId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.data.success) {
           setMembers(response.data.data || []);
@@ -88,8 +85,8 @@ export default function AddMember({ startupId, token }) {
   const handleDelete = async (index) => {
     const member = members[index];
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/api/team-members/${startupId}/${member.id}`,
+      const response = await axiosInstance.delete(
+        `/team-members/${startupId}/${member.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

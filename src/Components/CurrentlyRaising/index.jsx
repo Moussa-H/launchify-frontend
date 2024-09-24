@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import {
   Button,
   Dialog,
@@ -127,16 +127,13 @@ const CurrentlyRaising = ({
   const handleDelete = async () => {
     try {
       // Delete investment sources
-      await axios.delete(
-        `http://localhost:8000/api/investment-sources/${startupId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axiosInstance.delete(`/investment-sources/${startupId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       // Delete raising info
-      await axios.delete(
-        `http://localhost:8000/api/startup/investinfo/${startupId}`,
+      await axiosInstance.delete(
+        `/startup/investinfo/${startupId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -172,8 +169,8 @@ const CurrentlyRaising = ({
           .map((source) => ({ investment_source: source })),
       };
 
-      await axios.post(
-        `http://localhost:8000/api/investment-sources/${startupId}`,
+      await axiosInstance.post(
+        `/investment-sources/${startupId}`,
         investmentData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -183,8 +180,8 @@ const CurrentlyRaising = ({
         currently_raising_type: type,
         currently_raising_size: raisingSize,
       };
-      await axios.post(
-        `http://localhost:8000/api/startup/investinfo/${startupId}`,
+      await axiosInstance.post(
+        `/startup/investinfo/${startupId}`,
         raiseInfoData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

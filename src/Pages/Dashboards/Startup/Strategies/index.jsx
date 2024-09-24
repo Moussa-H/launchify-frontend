@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import StrategiesTable from "../../../../Components/StrategiesTable";
@@ -16,8 +16,8 @@ const Strategies = ({ token }) => {
     const fetchStrategies = async () => {
       setIsLoading(true); // Set loading to true before fetching data
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/strategies",
+        const response = await axiosInstance.get(
+          "/strategies",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

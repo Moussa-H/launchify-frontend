@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import { Grid, Card, CardContent, Typography } from "@mui/material";
 import { Container, Row, Col } from "react-bootstrap";
 import "./style.css";
@@ -17,7 +17,7 @@ const InvestmentCards = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/summary", {
+        const response = await axiosInstance.get("/summary", {
           headers: {
             Authorization: `Bearer ${token}`, // Authorization header
             "Content-Type": "application/json",

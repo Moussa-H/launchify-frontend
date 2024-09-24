@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import { Paper, Grid, Typography } from "@mui/material";
 import "./style.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate, useParams } from "react-router-dom";
 
-const API_URL = "http://localhost:8000/api/startup";
+const API_URL = "/startup";
 const token = localStorage.getItem("token");
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -24,7 +24,9 @@ const StartupDetails = () => {
 
   const fetchStartupDetails = async () => {
     try {
-      const response = await axios.get(`${API_URL}/${startupId}`, { headers });
+      const response = await axiosInstance.get(`${API_URL}/${startupId}`, {
+        headers,
+      });
       if (response.data.status === "success") {
         setStartup(response.data.startup);
       }

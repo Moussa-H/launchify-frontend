@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import {
   TextField,
   IconButton,
@@ -23,8 +23,8 @@ const ChatMessagesMentor = () => {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/chat/messages/${mentorId}/${startupId}`,
+      const response = await axiosInstance.get(
+        `/chat/messages/${mentorId}/${startupId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -41,12 +41,9 @@ const ChatMessagesMentor = () => {
 
   const fetchMentor = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/mentor/${mentorId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await axiosInstance.get(`/mentor/${mentorId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (response.data.status === "success") {
         const { full_name, industry } = response.data.mentor;
         setMentor({
@@ -62,8 +59,8 @@ const ChatMessagesMentor = () => {
 
   const fetchStartup = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/startup/${startupId}`,
+      const response = await axiosInstance.get(
+        `/startup/${startupId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -112,7 +109,7 @@ const ChatMessagesMentor = () => {
     setMessage("");
 
     try {
-      await axios.post("http://localhost:8000/api/chat/message/send", payload, {
+      await axiosInstance.post("chat/message/send", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

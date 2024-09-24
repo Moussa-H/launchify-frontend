@@ -9,11 +9,11 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import axios from "axios";
+import axiosInstance from "../../../../axiosInstance";
 import "./style.css";
 
 
-const API_URL = "http://localhost:8000/api/investor";
+const API_URL = "/investor";
 const token = localStorage.getItem("token");
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const Profile = () => {
 
   const fetchInvestorProfile = async () => {
     try {
-      const response = await axios.get(API_URL, { headers });
+      const response = await axiosInstance.get(API_URL, { headers });
 
       if (response.data.status === "success") {
         const investor = response.data.investors[0];
@@ -103,10 +103,12 @@ const Profile = () => {
       const payload = { ...formValues };
 
       if (isUpdating) {
-        await axios.put(`${API_URL}/${investorId}`, payload, { headers });
+        await axiosInstance.put(`${API_URL}/${investorId}`, payload, {
+          headers,
+        });
         setSuccess("Profile updated successfully!");
       } else {
-        await axios.post(API_URL, payload, { headers });
+        await axiosInstance.post(API_URL, payload, { headers });
         setSuccess("Profile saved successfully!");
       }
     } catch (error) {

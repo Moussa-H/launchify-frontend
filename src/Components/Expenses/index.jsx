@@ -3,13 +3,13 @@ import { TextField, Button, Snackbar, Alert } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 import dayjs from "dayjs";
 import "./style.css";
 
 // Base API URL and headers
 const token = localStorage.getItem("token");
-const API_URL = "http://localhost:8000/api/expenses";
+const API_URL = "/expenses";
 const headers = {
   Authorization: `Bearer ${token}`, // Make sure 'token' is defined or retrieved appropriately
   "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const Expenses = () => {
       const month = date.month() + 1;
 
       // Fetch the expenses for the selected year and month
-      const response = await axios.get(API_URL, {
+      const response = await axiosInstance.get(API_URL, {
         headers,
         params: { year, month },
       });
@@ -101,10 +101,10 @@ const Expenses = () => {
 
     try {
       if (isUpdating) {
-        await axios.put(API_URL, payload, { headers }); // Update expenses
+        await axiosInstance.put(API_URL, payload, { headers }); // Update expenses
         setSuccessMessage("Expenses updated successfully!");
       } else {
-        await axios.post(API_URL, payload, { headers }); // Save new expenses
+        await axiosInstance.post(API_URL, payload, { headers }); // Save new expenses
         setSuccessMessage("Expenses saved successfully!");
       }
 
